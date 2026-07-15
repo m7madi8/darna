@@ -1,0 +1,202 @@
+openapi: 3.0.3
+info:
+  title: Darna Reservation API
+  version: 1.0.0
+  description: Enterprise restaurant table reservation platform API (v1).
+servers:
+  - url: http://localhost:8000/api/v1
+paths:
+  /auth/login:
+    post:
+      summary: Staff login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        "200": { description: Authenticated user }
+  /auth/me:
+    get:
+      summary: Current user + permissions
+      security: [{ sanctum: [] }]
+      responses:
+        "200": { description: User profile }
+  /auth/logout:
+    post:
+      summary: Logout
+      security: [{ sanctum: [] }]
+      responses:
+        "200": { description: Logged out }
+  /public/branches/{slug}:
+    get:
+      summary: Public branch profile
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Branch details }
+  /public/branches/{slug}/floor:
+    get:
+      summary: Public floor (no PII)
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Tables + anonymous reservation windows }
+  /public/branches/{slug}/availability:
+    get:
+      summary: Availability + recommended tables
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+        - in: query
+          name: date
+          required: true
+          schema: { type: string, format: date }
+        - in: query
+          name: time
+          required: true
+          schema: { type: string, example: "19:00" }
+        - in: query
+          name: party_size
+          required: true
+          schema: { type: integer }
+      responses:
+        "200": { description: Recommended tables }
+  /public/branches/{slug}/reservations:
+    post:
+      summary: Create pending reservation request
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [guest_name, guest_phone, party_size, starts_at]
+              properties:
+                guest_name: { type: string }
+                guest_phone: { type: string }
+                party_size: { type: integer }
+                starts_at: { type: string, format: date-time }
+                table_id: { type: string, format: uuid }
+                notes: { type: string }
+      responses:
+        "201": { description: Pending reservation created }
+  /reservations:
+    get:
+      summary: List reservations
+      security: [{ sanctum: [] }]
+      parameters:
+        - in: header
+          name: X-Branch-Id
+          required: true
+          schema: { type: string, format: uuid }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: date
+          schema: { type: string, format: date }
+        - in: query
+          name: q
+          schema: { type: string }
+      responses:
+        "200": { description: Paginated reservations }
+    post:
+      summary: Create phone/walk-in reservation
+      security: [{ sanctum: [] }]
+      responses:
+        "201": { description: Created }
+  /reservations/{id}/approve:
+    post:
+      summary: Approve reservation
+      security: [{ sanctum: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+        - in: header
+          name: X-Branch-Id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200": { description: Approved }
+        "409": { description: Conflict }
+  /reservations/{id}/check-in:
+    post:
+      summary: Check in guest
+      security: [{ sanctum: [] }]
+      responses:
+        "200": { description: Occupied }
+  /reservations/{id}/check-out:
+    post:
+      summary: Check out guest
+      security: [{ sanctum: [] }]
+      responses:
+        "200": { description: Completed }
+  /reservations/{id}/extend:
+    post:
+      summary: Extend reservation
+      security: [{ sanctum: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                minutes: { type: integer, enum: [15, 30, 60] }
+      responses:
+        "200": { description: Extended }
+        "409": { description: Conflict }
+  /floor:
+    get:
+      summary: Staff floor plan
+      security: [{ sanctum: [] }]
+      responses:
+        "200": { description: Tables }
+  /floor/layout:
+    patch:
+      summary: Persist table positions
+      security: [{ sanctum: [] }]
+      responses:
+        "200": { description: Layout updated }
+  /timeline:
+    get:
+      summary: Daily table timeline
+      security: [{ sanctum: [] }]
+      parameters:
+        - in: query
+          name: date
+          schema: { type: string, format: date }
+      responses:
+        "200": { description: Timeline blocks }
+  /dashboard:
+    get:
+      summary: Branch KPI summary
+      security: [{ sanctum: [] }]
+      responses:
+        "200": { description: KPIs }
+components:
+  securitySchemes:
+    sanctum:
+      type: apiKey
+      in: cookie
+      name: darna_session
