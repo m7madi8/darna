@@ -190,7 +190,7 @@ export default function BookPage() {
   const address = branch.data?.address ?? t.location;
 
   return (
-    <main className="relative min-h-dvh overflow-x-hidden bg-forest-700 text-cream-200">
+    <main className="relative min-h-dvh bg-forest-700 text-cream-200">
       <div className="pointer-events-none absolute inset-0 bg-atmosphere-green" />
       {!reduce ? (
         <>

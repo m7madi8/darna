@@ -66,7 +66,7 @@ export function GuestFloorPlan({
       initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className={cn("w-full max-w-full space-y-3 overflow-x-hidden", className)}
+      className={cn("w-full max-w-full space-y-3", className)}
     >
       <div className="flex items-center justify-between gap-3">
         <p className="text-[11px] tracking-[0.16em] text-cream-200/45">
@@ -114,8 +114,12 @@ export function GuestFloorPlan({
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(85,133,108,0.22),transparent_70%)]" />
         <div
           ref={viewportRef}
-          className="relative max-w-full overflow-x-hidden overflow-y-auto p-3 sm:p-5"
-          style={{ maxHeight: "min(58vh, 520px)" }}
+          className="relative max-w-full overflow-x-auto overflow-y-auto overscroll-y-contain p-3 sm:p-5"
+          style={{
+            maxHeight: "min(58vh, 520px)",
+            WebkitOverflowScrolling: "touch",
+            touchAction: "pan-x pan-y",
+          }}
         >
           <div
             className="relative mx-auto"
