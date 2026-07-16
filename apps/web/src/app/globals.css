@@ -40,22 +40,25 @@
   }
 
   html {
-    @apply scroll-smooth antialiased;
+    @apply antialiased;
     color-scheme: dark;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
+    height: 100%;
+    overflow: hidden;
   }
 
   body {
-    @apply min-h-dvh bg-[color:var(--background)] font-sans text-[color:var(--foreground)];
+    @apply bg-[color:var(--background)] font-sans text-[color:var(--foreground)];
     background-image: var(--atmosphere);
     background-attachment: scroll;
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
-    max-width: 100%;
+    height: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
     font-feature-settings: "kern" 1;
     text-rendering: optimizeLegibility;
   }

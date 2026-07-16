@@ -190,8 +190,8 @@ export default function BookPage() {
   const address = branch.data?.address ?? t.location;
 
   return (
-    <main className="relative flex h-dvh max-h-dvh flex-col overflow-hidden bg-forest-700 text-cream-200">
-      <div className="pointer-events-none absolute inset-0 bg-atmosphere-green" />
+    <main className="relative min-h-dvh bg-forest-700 text-cream-200">
+      <div className="pointer-events-none absolute inset-0 bg-atmosphere-green" aria-hidden />
       {!reduce ? (
         <>
           <motion.div
@@ -214,11 +214,7 @@ export default function BookPage() {
         </>
       )}
 
-      <div
-        className="relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-y-contain"
-        style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
-      >
-        <div className="mx-auto flex w-full max-w-6xl flex-col px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-6 sm:px-8 sm:pt-8 md:px-10 lg:max-w-7xl lg:px-12 lg:pt-10">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(7.5rem,calc(env(safe-area-inset-bottom)+6rem))] sm:px-8 sm:pt-8 md:px-10 md:pb-24 lg:max-w-7xl lg:px-12 lg:pt-10">
         <motion.div
           className="flex items-center justify-between gap-3"
           initial={reduce ? false : { opacity: 0, y: -12 }}
@@ -593,7 +589,6 @@ export default function BookPage() {
                                       }}
                                       aria-pressed={active}
                                       aria-label={t12.labelFull}
-                                      layout
                                       className={cn(
                                         "h-10 min-w-[4.25rem] rounded-full px-3.5 text-sm font-medium tabular-nums transition-colors md:h-11 md:min-w-[4.5rem]",
                                         active
@@ -774,7 +769,6 @@ export default function BookPage() {
             )}
           </AnimatePresence>
         </div>
-        </div>
       </div>
 
       <AnimatePresence>
@@ -785,7 +779,7 @@ export default function BookPage() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 16, opacity: 0 }}
             transition={{ duration: 0.45, delay: 0.2, ease: softEase }}
-            className="relative z-30 shrink-0 border-t border-cream-200/10 bg-forest-800/95 px-4 pt-3 pb-[max(0.9rem,env(safe-area-inset-bottom))] backdrop-blur-2xl md:px-8 lg:px-12"
+            className="fixed inset-x-0 bottom-0 z-30 border-t border-cream-200/10 bg-forest-800/95 px-4 pt-3 pb-[max(0.9rem,env(safe-area-inset-bottom))] backdrop-blur-2xl md:px-8 lg:px-12"
           >
             <div className="mx-auto flex w-full max-w-lg gap-2 md:max-w-2xl lg:max-w-3xl">
               {step > 1 ? (

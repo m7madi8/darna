@@ -26,10 +26,7 @@ export default function HomePage() {
   const reduce = useReducedMotion();
 
   return (
-    <div
-      className="relative flex h-dvh max-h-dvh flex-col overflow-y-auto overscroll-y-contain bg-forest-700"
-      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
-    >
+    <div className="relative min-h-dvh bg-forest-700">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <motion.div
           className="absolute inset-0"
@@ -68,26 +65,20 @@ export default function HomePage() {
           />
         </motion.div>
 
-        {/* Static green wash — background only */}
         <div className="absolute inset-0 bg-gradient-to-l from-forest-700/95 via-forest-700/78 to-forest-600/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-forest-800 via-forest-700/25 to-forest-700/55" />
-        <div className="pointer-events-none absolute -right-16 top-24 h-72 w-72 rounded-full bg-forest-400/25 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-10 left-0 h-80 w-80 rounded-full bg-cream-200/10 blur-3xl" />
+        <div className="absolute -right-16 top-24 h-72 w-72 rounded-full bg-forest-400/25 blur-3xl" />
+        <div className="absolute bottom-10 left-0 h-80 w-80 rounded-full bg-cream-200/10 blur-3xl" />
       </div>
 
-      <motion.header
-        className="relative z-20 mx-auto flex w-full max-w-6xl shrink-0 items-center justify-between gap-4 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6 sm:py-4"
-        initial={reduce ? false : { opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.65, ease: softEase, delay: 0.08 }}
-      >
+      <header className="relative z-20 mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6 sm:py-4">
         <BrandLogo size="sm" priority href={null} />
         <LanguageToggle />
-      </motion.header>
+      </header>
 
-      <main className="relative z-20 flex min-h-0 flex-1 flex-col justify-end pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 sm:justify-center sm:pb-[max(2rem,env(safe-area-inset-bottom))] sm:pt-0">
+      <main className="relative z-20 mx-auto flex min-h-[calc(100dvh-4.5rem)] w-full max-w-6xl flex-col justify-end px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 sm:justify-center sm:px-6 sm:pb-[max(2rem,env(safe-area-inset-bottom))] sm:pt-0">
         <motion.div
-          className="mx-auto w-full max-w-6xl px-4 sm:px-6"
+          className="w-full"
           variants={heroStagger}
           initial="hidden"
           animate="show"
