@@ -26,7 +26,10 @@ export default function HomePage() {
   const reduce = useReducedMotion();
 
   return (
-    <div className="relative flex min-h-dvh flex-col bg-forest-700">
+    <div
+      className="relative flex h-dvh max-h-dvh flex-col overflow-y-auto overscroll-y-contain bg-forest-700"
+      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
+    >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <motion.div
           className="absolute inset-0"

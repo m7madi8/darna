@@ -190,7 +190,7 @@ export default function BookPage() {
   const address = branch.data?.address ?? t.location;
 
   return (
-    <main className="relative min-h-dvh bg-forest-700 text-cream-200">
+    <main className="relative flex h-dvh max-h-dvh flex-col overflow-hidden bg-forest-700 text-cream-200">
       <div className="pointer-events-none absolute inset-0 bg-atmosphere-green" />
       {!reduce ? (
         <>
@@ -214,7 +214,11 @@ export default function BookPage() {
         </>
       )}
 
-      <div className="relative z-10 mx-auto flex min-h-dvh w-full max-w-6xl flex-col px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-8 sm:pt-8 md:px-10 lg:max-w-7xl lg:px-12 lg:pt-10">
+      <div
+        className="relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-y-contain"
+        style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
+      >
+        <div className="mx-auto flex w-full max-w-6xl flex-col px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-6 sm:px-8 sm:pt-8 md:px-10 lg:max-w-7xl lg:px-12 lg:pt-10">
         <motion.div
           className="flex items-center justify-between gap-3"
           initial={reduce ? false : { opacity: 0, y: -12 }}
@@ -341,7 +345,7 @@ export default function BookPage() {
           ) : null}
         </div>
 
-        <div className="mx-auto mt-8 w-full flex-1 pb-[max(7rem,calc(env(safe-area-inset-bottom)+5.75rem))] md:mt-10 md:pb-20 lg:mt-12 lg:pb-24">
+        <div className="mx-auto mt-8 w-full md:mt-10 lg:mt-12">
           <AnimatePresence mode="wait">
             {submitted ? (
               <motion.div
@@ -770,17 +774,18 @@ export default function BookPage() {
             )}
           </AnimatePresence>
         </div>
+        </div>
       </div>
 
       <AnimatePresence>
         {!submitted ? (
           <motion.div
             key="footer"
-            initial={reduce ? false : { y: 80, opacity: 0 }}
+            initial={reduce ? false : { y: 24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 60, opacity: 0 }}
-            transition={{ duration: 0.55, delay: 0.4, ease: softEase }}
-            className="fixed inset-x-0 bottom-0 z-30 border-t border-cream-200/10 bg-forest-800/90 px-4 pt-3 pb-[max(0.9rem,env(safe-area-inset-bottom))] backdrop-blur-2xl md:px-8 lg:px-12"
+            exit={{ y: 16, opacity: 0 }}
+            transition={{ duration: 0.45, delay: 0.2, ease: softEase }}
+            className="relative z-30 shrink-0 border-t border-cream-200/10 bg-forest-800/95 px-4 pt-3 pb-[max(0.9rem,env(safe-area-inset-bottom))] backdrop-blur-2xl md:px-8 lg:px-12"
           >
             <div className="mx-auto flex w-full max-w-lg gap-2 md:max-w-2xl lg:max-w-3xl">
               {step > 1 ? (
