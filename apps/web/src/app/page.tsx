@@ -4,7 +4,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useEffect } from "react";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { LocationLink } from "@/components/brand/location-link";
 import { LanguageToggle } from "@/components/locale/language-toggle";
@@ -26,64 +25,8 @@ export default function HomePage() {
   const isEnglish = locale === "en";
   const reduce = useReducedMotion();
 
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
-    const scrollY = window.scrollY;
-    const prev = {
-      htmlOverflow: html.style.overflow,
-      bodyOverflow: body.style.overflow,
-      htmlOverscroll: html.style.overscrollBehavior,
-      bodyOverscroll: body.style.overscrollBehavior,
-      htmlHeight: html.style.height,
-      bodyHeight: body.style.height,
-      bodyPosition: body.style.position,
-      bodyTop: body.style.top,
-      bodyLeft: body.style.left,
-      bodyRight: body.style.right,
-      bodyWidth: body.style.width,
-      bodyTouchAction: body.style.touchAction,
-    };
-
-    html.style.overflow = "hidden";
-    body.style.overflow = "hidden";
-    html.style.overscrollBehavior = "none";
-    body.style.overscrollBehavior = "none";
-    html.style.height = "100%";
-    body.style.height = "100%";
-    body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
-    body.style.left = "0";
-    body.style.right = "0";
-    body.style.width = "100%";
-    body.style.touchAction = "manipulation";
-
-    const blockOverscroll = (event: TouchEvent) => {
-      event.preventDefault();
-    };
-
-    document.addEventListener("touchmove", blockOverscroll, { passive: false });
-
-    return () => {
-      html.style.overflow = prev.htmlOverflow;
-      body.style.overflow = prev.bodyOverflow;
-      html.style.overscrollBehavior = prev.htmlOverscroll;
-      body.style.overscrollBehavior = prev.bodyOverscroll;
-      html.style.height = prev.htmlHeight;
-      body.style.height = prev.bodyHeight;
-      body.style.position = prev.bodyPosition;
-      body.style.top = prev.bodyTop;
-      body.style.left = prev.bodyLeft;
-      body.style.right = prev.bodyRight;
-      body.style.width = prev.bodyWidth;
-      body.style.touchAction = prev.bodyTouchAction;
-      document.removeEventListener("touchmove", blockOverscroll);
-      window.scrollTo(0, scrollY);
-    };
-  }, []);
-
   return (
-    <div className="fixed inset-0 flex flex-col overflow-hidden overscroll-none bg-forest-700">
+    <div className="relative flex min-h-dvh flex-col overflow-x-hidden overflow-y-auto bg-forest-700">
       <div className="absolute inset-0">
         <motion.div
           className="absolute inset-0"
