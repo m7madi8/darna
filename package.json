@@ -3,8 +3,11 @@
   "private": true,
   "description": "Darna enterprise restaurant reservation platform",
   "scripts": {
+    "dev": "npm --prefix apps/web run dev -- --hostname 0.0.0.0 --port 3000",
     "dev:web": "npm --prefix apps/web run dev -- --hostname 0.0.0.0 --port 3000",
+    "build": "npm --prefix apps/web run build",
     "build:web": "npm --prefix apps/web run build",
+    "start": "npm --prefix apps/web run start",
     "docker:up": "docker compose up --build",
     "docker:down": "docker compose down"
   }
