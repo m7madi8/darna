@@ -12,6 +12,27 @@ type Msg = {
   location: string;
   getDirections: string;
   openMaps: string;
+  vipCta: string;
+  vipHint: string;
+  vipToggle: string;
+  vipEyebrow: string;
+  vipTitle: string;
+  vipTagline: string;
+  perkTable: string;
+  perkHost: string;
+  perkParty: string;
+  perkOccasion: string;
+  vipRequestTitle: string;
+  vipRequestHint: string;
+  vipDuration: string;
+  vipNotesPlaceholder: string;
+  vipSubmit: string;
+  vipDisclaimer: string;
+  vipBackRegular: string;
+  vipReceived: string;
+  vipPending: (code: string) => string;
+  occasionTitle: string;
+  occasionHint: string;
   reserveEvening: string;
   tablesOpen: (n: number) => string;
   evening: string;
@@ -99,6 +120,29 @@ export const messages: Record<Locale, Msg> = {
     location: "فلسطين · رام الله",
     getDirections: "الموقع على الخريطة",
     openMaps: "فتح موقع دارنا على خرائط Google",
+    vipCta: "حجز VIP",
+    vipHint: "طاولة مميزة وخدمة خاصة",
+    vipToggle: "طلب طاولة VIP",
+    vipEyebrow: "تجربة دارنا الخاصة",
+    vipTitle: "VIP",
+    vipTagline:
+      "أمسية بطابع خاص — طاولة مفضّلة، استقبال شخصي، وترتيب يليق بالمناسبات والأفراح.",
+    perkTable: "طاولة مميزة في أفضل المواقع داخل القاعة",
+    perkHost: "استقبال وعناية خاصة طوال الأمسية",
+    perkParty: "مناسب للمجموعات حتى ٤٠ ضيفًا",
+    perkOccasion: "أفراح، خطوبة، ذكريات، ومناسبات خاصة",
+    vipRequestTitle: "اطلبوا أمسيتكم",
+    vipRequestHint: "نراجع طلب VIP خلال وقت قصير ونؤكّده لكم شخصيًا.",
+    vipDuration: "جلسة VIP حتى ٣ ساعات",
+    vipNotesPlaceholder: "تفاصيل الزينة، الكعكة، ترتيب الطاولات، أو أي طلب خاص…",
+    vipSubmit: "إرسال طلب VIP",
+    vipDisclaimer: "طلبات VIP تخضع للتأكيد حسب التوفر وترتيب القاعة.",
+    vipBackRegular: "حجز طاولة عادي",
+    vipReceived: "وصل طلب VIP",
+    vipPending: (code) =>
+      `طلبكم ${code} بين أيدينا — سنتواصل معكم لتأكيد التفاصيل قريبًا.`,
+    occasionTitle: "نوع المناسبة",
+    occasionHint: "أفراح، مناسبات خاصة، أو عشاء هادئ — اختاروا ما يناسبكم.",
     reserveEvening: "أمسيتكم تبدأ هنا",
     tablesOpen: tablesOpenAr,
     evening: "الموعد",
@@ -160,6 +204,29 @@ export const messages: Record<Locale, Msg> = {
     location: "Palestine · Ramallah",
     getDirections: "Get directions",
     openMaps: "Open DARNA on Google Maps",
+    vipCta: "VIP booking",
+    vipHint: "Preferred table & attentive service",
+    vipToggle: "Request a VIP table",
+    vipEyebrow: "The Darna private experience",
+    vipTitle: "VIP",
+    vipTagline:
+      "An elevated evening — preferred seating, personal hosting, and arrangements for celebrations & weddings.",
+    perkTable: "Preferred table in the best room positions",
+    perkHost: "Attentive hosting throughout your evening",
+    perkParty: "Groups up to 40 guests",
+    perkOccasion: "Weddings, engagements, anniversaries & private events",
+    vipRequestTitle: "Request your evening",
+    vipRequestHint: "We review VIP requests quickly and confirm with you personally.",
+    vipDuration: "VIP seating up to 3 hours",
+    vipNotesPlaceholder: "Florals, cake, table layout, or any special request…",
+    vipSubmit: "Send VIP request",
+    vipDisclaimer: "VIP requests are confirmed based on availability and floor plan.",
+    vipBackRegular: "Regular table booking",
+    vipReceived: "VIP request received",
+    vipPending: (code) =>
+      `Request ${code} is with us — we’ll confirm the details shortly.`,
+    occasionTitle: "Occasion",
+    occasionHint: "Weddings, private celebrations, or a quiet dinner — choose what fits.",
     reserveEvening: "Your evening begins here",
     tablesOpen: tablesOpenEn,
     evening: "When",

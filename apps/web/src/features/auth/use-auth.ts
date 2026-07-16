@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { fetchMe, login as loginRequest, logout as logoutRequest } from "@/lib/auth";
 import {
   DEMO_BRANCH_ID,
@@ -47,10 +48,22 @@ export function useAuth() {
         }
         clear();
         return null;
+      } finally {
+        setLoading(false);
       }
     },
     retry: false,
+    // Prefer instant demo owner when API is offline
+    placeholderData: isStaffAuthBypassEnabled() ? DEMO_STAFF_USER : undefined,
   });
+
+  // Seed demo owner immediately on first client render
+  useEffect(() => {
+    if (!isStaffAuthBypassEnabled()) return;
+    if (!useAuthStore.getState().user) {
+      applyDemoStaffSession(setUser, setBranchId, branchId);
+    }
+  }, [branchId, setBranchId, setUser]);
 
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>

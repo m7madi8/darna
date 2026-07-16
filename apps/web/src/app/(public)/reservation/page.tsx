@@ -23,6 +23,7 @@ import {
 } from "@/features/public/use-public-booking";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { LocationLink } from "@/components/brand/location-link";
+import { OccasionPicker } from "@/components/booking/occasion-picker";
 import { LanguageToggle } from "@/components/locale/language-toggle";
 import { useLocale } from "@/components/locale/locale-provider";
 import { Button } from "@/components/ui/button";
@@ -45,6 +46,7 @@ import {
   softSpring,
   stepPanel,
 } from "@/lib/guest-motion";
+import { composeReservationNotes, type OccasionId } from "@/lib/occasions";
 import { PUBLIC_BRANCH_SLUG } from "@/lib/public-branch";
 import { guestBrandClass, guestHeadingClass } from "@/lib/typography";
 import { isGuestTableSelectable } from "@/lib/table-party-size";
@@ -103,6 +105,7 @@ export default function BookPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
+  const [occasion, setOccasion] = useState<OccasionId>("none");
   const [submitted, setSubmitted] = useState<string | null>(null);
 
   const availabilityParams = useMemo(
@@ -160,7 +163,8 @@ export default function BookPage() {
         starts_at: toReservationStartsAt(date, time),
         duration_minutes: RESERVATION_DURATION_MINUTES,
         table_id: selectedTable,
-        notes,
+        notes: composeReservationNotes({ occasion, locale, notes }),
+        is_vip: occasion === "wedding" || occasion === "engagement",
       });
       setSubmitted(res.code || "pending");
     } catch {
@@ -222,7 +226,10 @@ export default function BookPage() {
           transition={{ duration: 0.65, ease: softEase }}
         >
           <BrandLogo href="/" size="sm" priority />
-          <LanguageToggle />
+          <div className="flex items-center gap-1">
+            <LocationLink variant="icon" />
+            <LanguageToggle />
+          </div>
         </motion.div>
 
         {/* Brand + progress: stacked on phone, side-by-side from iPad */}
@@ -285,6 +292,14 @@ export default function BookPage() {
             >
               {t.tablesOpen(availableCount)}
             </motion.p>
+            <motion.div variants={fadeUp} className="mt-3 flex justify-center md:justify-start">
+              <Link
+                href="/vip"
+                className="text-[11px] tracking-[0.12em] text-cream-300/70 underline-offset-4 transition hover:text-cream-200 hover:underline"
+              >
+                {t.vipCta} →
+              </Link>
+            </motion.div>
           </motion.div>
 
           {!submitted ? (
@@ -504,6 +519,16 @@ export default function BookPage() {
                             </motion.button>
                           </div>
                         </div>
+                      </motion.div>
+
+                      <motion.div variants={fadeUp}>
+                        <OccasionPicker
+                          value={occasion}
+                          onChange={setOccasion}
+                          locale={locale}
+                          title={t.occasionTitle}
+                          hint={t.occasionHint}
+                        />
                       </motion.div>
                     </div>
 

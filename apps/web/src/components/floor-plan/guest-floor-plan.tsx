@@ -114,11 +114,10 @@ export function GuestFloorPlan({
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(85,133,108,0.22),transparent_70%)]" />
         <div
           ref={viewportRef}
-          className="relative max-w-full overflow-x-auto overflow-y-auto overscroll-y-contain p-3 sm:p-5"
+          className="relative max-w-full overflow-x-auto overflow-y-auto p-3 sm:p-5"
           style={{
             maxHeight: "min(58vh, 520px)",
             WebkitOverflowScrolling: "touch",
-            touchAction: "pan-x pan-y",
           }}
         >
           <div

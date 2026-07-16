@@ -22,55 +22,53 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { BrandLogo } from "@/components/brand/brand-logo";
+import { LanguageToggle } from "@/components/locale/language-toggle";
+import { useLocale } from "@/components/locale/locale-provider";
 import { Button } from "@/components/ui/button";
 import { logout } from "@/lib/auth";
+import { staffMessages } from "@/lib/i18n/staff-messages";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth-store";
 import { useBranchStore } from "@/store/branch-store";
 
-const nav = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutGrid },
-  { href: "/reservations", label: "Reservations", icon: CalendarDays },
-  { href: "/floor", label: "Floor", icon: Map },
-  { href: "/timeline", label: "Timeline", icon: Clock3 },
-  { href: "/waiting-list", label: "Waiting list", icon: ListOrdered },
-  { href: "/customers", label: "Customers", icon: Users },
-  { href: "/employees", label: "Employees", icon: UserRound },
-  { href: "/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/heatmap", label: "Heatmap", icon: Flame },
-  { href: "/activity-log", label: "Activity", icon: Activity },
-  { href: "/blacklist", label: "Blacklist", icon: Ban },
-  { href: "/notifications", label: "Notifications", icon: Bell },
-  { href: "/settings", label: "Settings", icon: Settings },
+const NAV_HREFS = [
+  { href: "/dashboard", key: "dashboard" as const, icon: LayoutGrid },
+  { href: "/reservations", key: "reservations" as const, icon: CalendarDays },
+  { href: "/floor", key: "floor" as const, icon: Map },
+  { href: "/timeline", key: "timeline" as const, icon: Clock3 },
+  { href: "/waiting-list", key: "waitingList" as const, icon: ListOrdered },
+  { href: "/customers", key: "customers" as const, icon: Users },
+  { href: "/employees", key: "employees" as const, icon: UserRound },
+  { href: "/analytics", key: "analytics" as const, icon: BarChart3 },
+  { href: "/heatmap", key: "heatmap" as const, icon: Flame },
+  { href: "/activity-log", key: "activity" as const, icon: Activity },
+  { href: "/blacklist", key: "blacklist" as const, icon: Ban },
+  { href: "/notifications", key: "notifications" as const, icon: Bell },
+  { href: "/settings", key: "settings" as const, icon: Settings },
 ];
 
-const primaryMobile = nav.slice(0, 5);
-
-function BranchSelect({
-  className,
-}: {
-  className?: string;
-}) {
-  const user = useAuthStore((s) => s.user);
-  const branchId = useBranchStore((s) => s.branchId);
-  const setBranchId = useBranchStore((s) => s.setBranchId);
+function BranchSelect({ className }: { className?: string }) {
+  const s = staffMessages[useLocale().locale];
+  const user = useAuthStore((st) => st.user);
+  const branchId = useBranchStore((st) => st.branchId);
+  const setBranchId = useBranchStore((st) => st.setBranchId);
   const branches = user?.branches ?? [];
 
   return (
     <label className={cn("block space-y-1.5", className)}>
       <span className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--muted)]">
-        Branch
+        {s.branch}
       </span>
       <div className="relative">
         <select
-          className="h-11 w-full appearance-none rounded-xl border border-[color:var(--border)] bg-[color:var(--card-solid)] px-3 pr-8 text-base outline-none focus:ring-2 focus:ring-forest-500/25 sm:h-10 sm:text-sm"
+          className="h-11 w-full appearance-none rounded-xl border border-[color:var(--border)] bg-[color:var(--card-solid)] px-3 pe-8 text-base outline-none focus:ring-2 focus:ring-forest-500/25 sm:h-10 sm:text-sm"
           value={branchId ?? ""}
           onChange={(e) => setBranchId(e.target.value || null)}
         >
           <option value="" disabled>
-            Select branch
+            {s.selectBranch}
           </option>
           {branches.map((b) => (
             <option key={b.id} value={b.id}>
@@ -78,10 +76,10 @@ function BranchSelect({
             </option>
           ))}
           {branches.length === 0 ? (
-            <option value="placeholder">No branches loaded</option>
+            <option value="placeholder">{s.noBranches}</option>
           ) : null}
         </select>
-        <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--muted)]" />
+        <ChevronDown className="pointer-events-none absolute end-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--muted)]" />
       </div>
     </label>
   );
@@ -90,9 +88,21 @@ function BranchSelect({
 export function StaffShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const user = useAuthStore((s) => s.user);
-  const clear = useAuthStore((s) => s.clear);
+  const { locale, dir } = useLocale();
+  const s = staffMessages[locale];
+  const user = useAuthStore((st) => st.user);
+  const clear = useAuthStore((st) => st.clear);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const nav = useMemo(
+    () =>
+      NAV_HREFS.map((item) => ({
+        ...item,
+        label: s.nav[item.key],
+      })),
+    [s]
+  );
+  const primaryMobile = nav.slice(0, 5);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -114,12 +124,19 @@ export function StaffShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-dvh overflow-x-hidden lg:grid lg:grid-cols-[260px_1fr]">
-      <aside className="sticky top-0 z-30 hidden h-dvh flex-col border-r border-[color:var(--border)] bg-[color:var(--sidebar)] backdrop-blur-xl lg:flex">
+    <div
+      dir={dir}
+      lang={locale}
+      className="min-h-dvh max-w-full lg:grid lg:grid-cols-[260px_1fr]"
+    >
+      <aside className="sticky top-0 z-30 hidden h-dvh flex-col border-e border-[color:var(--border)] bg-[color:var(--sidebar)] backdrop-blur-xl lg:flex">
         <div className="px-6 py-6">
-          <BrandLogo href="/dashboard" size="sm" />
+          <div className="flex items-start justify-between gap-2">
+            <BrandLogo href="/dashboard" size="sm" />
+            <LanguageToggle className="mt-1 text-[color:var(--muted)] hover:text-cream-200" />
+          </div>
           <p className="mt-2 text-xs uppercase tracking-[0.22em] text-[color:var(--muted)]">
-            Staff console
+            {s.staffConsole}
           </p>
         </div>
 
@@ -157,10 +174,19 @@ export function StaffShell({ children }: { children: ReactNode }) {
           <BranchSelect />
           <div className="flex items-center justify-between gap-2">
             <div className="min-w-0">
-              <p className="truncate text-sm font-medium">{user?.name ?? "Staff"}</p>
-              <p className="truncate text-xs text-[color:var(--muted)]">{user?.email}</p>
+              <p className="truncate text-sm font-medium">
+                {user?.name ?? s.staff}
+              </p>
+              <p className="truncate text-xs text-[color:var(--muted)]">
+                {user?.email}
+              </p>
             </div>
-            <Button variant="ghost" size="sm" aria-label="Sign out" onClick={signOut}>
+            <Button
+              variant="ghost"
+              size="sm"
+              aria-label={s.signOut}
+              onClick={signOut}
+            >
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
@@ -168,14 +194,15 @@ export function StaffShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="min-w-0 pb-[env(safe-area-inset-bottom)]">
-        <header className="sticky top-0 z-20 flex items-center justify-between border-b border-[color:var(--border)] bg-[color:var(--background)]/90 px-3 py-2.5 backdrop-blur-xl pt-[max(0.625rem,env(safe-area-inset-top))] lg:hidden">
+        <header className="sticky top-0 z-20 flex items-center justify-between border-b border-[color:var(--border)] bg-[color:var(--background)]/90 px-3 py-2.5 pt-[max(0.625rem,env(safe-area-inset-top))] backdrop-blur-xl lg:hidden">
           <BrandLogo href="/dashboard" size="sm" />
           <div className="flex items-center gap-1">
+            <LanguageToggle className="px-2 text-[color:var(--muted)] hover:text-cream-200" />
             <Button
               variant="ghost"
               size="sm"
               className="h-10 w-10"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-label={menuOpen ? s.closeMenu : s.openMenu}
               onClick={() => setMenuOpen((o) => !o)}
             >
               {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -207,7 +234,7 @@ export function StaffShell({ children }: { children: ReactNode }) {
             onClick={() => setMenuOpen(true)}
             className="shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-[color:var(--muted)]"
           >
-            More
+            {s.more}
           </button>
         </div>
 
@@ -221,24 +248,24 @@ export function StaffShell({ children }: { children: ReactNode }) {
             >
               <button
                 type="button"
-                aria-label="Close menu"
+                aria-label={s.close}
                 className="absolute inset-0 bg-black/55"
                 onClick={() => setMenuOpen(false)}
               />
               <motion.aside
-                initial={{ x: "100%" }}
+                initial={{ x: dir === "rtl" ? "-100%" : "100%" }}
                 animate={{ x: 0 }}
-                exit={{ x: "100%" }}
+                exit={{ x: dir === "rtl" ? "-100%" : "100%" }}
                 transition={{ type: "spring", stiffness: 380, damping: 36 }}
-                className="absolute inset-y-0 right-0 flex w-[min(100%,20rem)] flex-col border-l border-[color:var(--border)] bg-[color:var(--card-solid)] shadow-glow"
+                className="absolute inset-y-0 end-0 flex w-[min(100%,20rem)] flex-col border-s border-[color:var(--border)] bg-[color:var(--card-solid)] shadow-glow"
               >
                 <div className="flex items-center justify-between border-b border-[color:var(--border)] px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
-                  <p className="text-sm font-medium text-cream-200">Menu</p>
+                  <p className="text-sm font-medium text-cream-200">{s.menu}</p>
                   <Button
                     variant="ghost"
                     size="sm"
                     className="h-10 w-10"
-                    aria-label="Close"
+                    aria-label={s.close}
                     onClick={() => setMenuOpen(false)}
                   >
                     <X className="h-5 w-5" />
@@ -247,7 +274,8 @@ export function StaffShell({ children }: { children: ReactNode }) {
                 <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 py-3">
                   {nav.map((item) => {
                     const active =
-                      pathname === item.href || pathname.startsWith(`${item.href}/`);
+                      pathname === item.href ||
+                      pathname.startsWith(`${item.href}/`);
                     const Icon = item.icon;
                     return (
                       <Link
@@ -270,10 +298,19 @@ export function StaffShell({ children }: { children: ReactNode }) {
                   <BranchSelect />
                   <div className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-medium">{user?.name ?? "Staff"}</p>
-                      <p className="truncate text-xs text-[color:var(--muted)]">{user?.email}</p>
+                      <p className="truncate text-sm font-medium">
+                        {user?.name ?? s.staff}
+                      </p>
+                      <p className="truncate text-xs text-[color:var(--muted)]">
+                        {user?.email}
+                      </p>
                     </div>
-                    <Button variant="ghost" size="sm" aria-label="Sign out" onClick={signOut}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      aria-label={s.signOut}
+                      onClick={signOut}
+                    >
                       <LogOut className="h-4 w-4" />
                     </Button>
                   </div>
@@ -283,7 +320,9 @@ export function StaffShell({ children }: { children: ReactNode }) {
           ) : null}
         </AnimatePresence>
 
-        <main className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8">{children}</main>
+        <main className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+          {children}
+        </main>
       </div>
     </div>
   );

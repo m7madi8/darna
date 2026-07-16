@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BrandLogo } from "@/components/brand/brand-logo";
-import { LocationLink } from "@/components/brand/location-link";
+import { LocationLink, VipLink } from "@/components/brand/location-link";
 import { LanguageToggle } from "@/components/locale/language-toggle";
 import { useLocale } from "@/components/locale/locale-provider";
 import { Button } from "@/components/ui/button";
@@ -73,7 +73,10 @@ export default function HomePage() {
 
       <header className="relative z-20 mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6 sm:py-4">
         <BrandLogo size="sm" priority href={null} />
-        <LanguageToggle />
+        <div className="flex items-center gap-1">
+          <LocationLink variant="icon" />
+          <LanguageToggle />
+        </div>
       </header>
 
       <main className="relative z-20 mx-auto flex min-h-[calc(100dvh-4.5rem)] w-full max-w-6xl flex-col justify-end px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 sm:justify-center sm:px-6 sm:pb-[max(2rem,env(safe-area-inset-bottom))] sm:pt-0">
@@ -185,7 +188,7 @@ export default function HomePage() {
                 whileTap={reduce ? undefined : { scale: 0.98 }}
                 transition={softSpring}
               >
-                <LocationLink />
+                <VipLink />
               </motion.div>
             </motion.div>
           </div>

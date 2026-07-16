@@ -102,6 +102,7 @@ export function useCreatePublicReservation(slug: string) {
       notes?: string;
       table_id?: string | null;
       preferred_table_id?: string;
+      is_vip?: boolean;
     }) => {
       const { data } = await apiClient.post<ApiItemResponse<Reservation>>(
         `/api/v1/public/branches/${slug}/reservations`,
