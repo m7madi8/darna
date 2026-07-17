@@ -613,26 +613,26 @@ export default function BookPage() {
                 ) : null}
 
                 {step === 2 ? (
-                  <div className="grid min-w-0 gap-6 md:gap-8 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)] lg:items-start lg:gap-10 xl:grid-cols-[minmax(18rem,22rem)_minmax(0,1fr)] xl:gap-12">
+                  <div className="grid min-w-0 gap-5 md:gap-8 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)] lg:items-start lg:gap-10 xl:grid-cols-[minmax(18rem,22rem)_minmax(0,1fr)] xl:gap-12">
                     <motion.div
-                      className="space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 lg:block lg:space-y-4"
+                      className="min-w-0 space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 lg:block lg:space-y-4"
                       variants={bookStagger}
                       initial="hidden"
                       animate="show"
                     >
                       <motion.div
                         variants={fadeUp}
-                        className="text-center md:col-span-2 md:text-start lg:col-span-1"
+                        className="min-w-0 text-center md:col-span-2 md:text-start lg:col-span-1"
                       >
                         <h2
                           className={guestHeadingClass(
                             locale,
-                            "text-3xl tracking-tight md:text-4xl"
+                            "text-balance text-[clamp(1.65rem,6.5vw,2.5rem)] leading-snug tracking-tight md:text-4xl"
                           )}
                         >
                           {t.chooseYourTable}
                         </h2>
-                        <p className="mt-2 text-sm text-cream-200/60 md:max-w-md">
+                        <p className="mt-2 text-pretty text-sm leading-relaxed text-cream-200/60 md:max-w-md">
                           {t.chooseTableHint}
                         </p>
                       </motion.div>
@@ -640,15 +640,17 @@ export default function BookPage() {
                       <motion.div
                         variants={fadeUp}
                         className={cn(
-                          "rounded-[1.35rem] border border-cream-200/10 bg-forest-800/55 px-4 py-3.5 text-sm text-cream-200 shadow-soft",
+                          "min-w-0 rounded-2xl border border-cream-200/10 bg-forest-800/55 px-4 py-3.5 text-sm text-cream-200 shadow-soft",
                           !selected && "md:col-span-2 lg:col-span-1"
                         )}
                       >
-                        <p>{eveningLabel}</p>
-                        <p className="mt-1 text-cream-200/50">
+                        <p className="break-words">{eveningLabel}</p>
+                        <p className="mt-1 break-words text-cream-200/50">
                           {formatTime12(time, locale).labelFull} · {partySize}{" "}
                           {t.guestsWord}
-                          {selected ? ` · ${t.tableWord} ${selected.number}` : ""}
+                          {selected
+                            ? ` · ${t.tableWord} ${selected.number}`
+                            : ""}
                         </p>
                       </motion.div>
 
@@ -687,7 +689,7 @@ export default function BookPage() {
                       selectedTableId={selectedTable}
                       partySize={partySize}
                       onSelectTable={onPickTable}
-                      className="lg:pt-1"
+                      className="min-w-0 lg:pt-1"
                     />
                   </div>
                 ) : null}
