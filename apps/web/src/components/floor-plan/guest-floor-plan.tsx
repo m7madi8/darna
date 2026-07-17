@@ -68,20 +68,20 @@ export function GuestFloorPlan({
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       className={cn("w-full max-w-full space-y-3", className)}
     >
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
         <p className="text-[11px] tracking-[0.16em] text-cream-200/45">
           {t.floor} · {partySize} {t.guests}
         </p>
-        <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 text-[11px] text-cream-200/50">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-cream-200/50 sm:justify-end">
           <span className="inline-flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-green-500" /> {t.free}
+            <span className="h-2 w-2 shrink-0 rounded-full bg-green-500" /> {t.free}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-stone-400" />{" "}
+            <span className="h-2 w-2 shrink-0 rounded-full bg-stone-400" />{" "}
             {t.tooSmallForParty}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-red-500" /> {t.taken}
+            <span className="h-2 w-2 shrink-0 rounded-full bg-red-500" /> {t.taken}
           </span>
         </div>
       </div>

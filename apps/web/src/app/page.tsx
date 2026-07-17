@@ -26,16 +26,20 @@ export default function HomePage() {
   const reduce = useReducedMotion();
 
   return (
-    <div className="relative min-h-dvh bg-forest-700">
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
+    <div className="relative min-h-dvh overflow-x-hidden bg-forest-700">
+      {/* Full-bleed scene — overlay covers every edge, no side cut-off */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+        aria-hidden
+      >
         <motion.div
-          className="absolute inset-0"
-          initial={reduce ? false : { scale: 1.08, opacity: 0.85 }}
+          className="absolute inset-[-6%]"
+          initial={reduce ? false : { scale: 1.04, opacity: 0.85 }}
           animate={
             reduce
               ? { scale: 1, opacity: 1 }
               : {
-                  scale: [1.08, 1.02, 1.05],
+                  scale: [1.04, 1, 1.02],
                   opacity: 1,
                 }
           }
@@ -59,16 +63,25 @@ export default function HomePage() {
             alt=""
             fill
             priority
-            quality={60}
-            sizes="(max-width: 768px) 100vw, 1400px"
+            quality={70}
+            sizes="100vw"
             className="object-cover object-center"
           />
         </motion.div>
 
-        <div className="absolute inset-0 bg-gradient-to-l from-forest-700/95 via-forest-700/78 to-forest-600/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-forest-800 via-forest-700/25 to-forest-700/55" />
-        <div className="absolute -right-16 top-24 h-72 w-72 rounded-full bg-forest-400/25 blur-3xl" />
-        <div className="absolute bottom-10 left-0 h-80 w-80 rounded-full bg-cream-200/10 blur-3xl" />
+        {/* Even forest veil — same strength left & right */}
+        <div className="absolute inset-0 bg-forest-700/62" />
+        {/* Soft vertical depth only (no side-biased gradient) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-forest-800/45 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-forest-800/85 via-forest-700/20 to-transparent" />
+        {/* Soft bottom blend into page */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-[42%]"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(35,68,49,0) 0%, rgba(35,68,49,0.4) 40%, rgba(28,54,40,0.88) 78%, #1c3628 100%)",
+          }}
+        />
       </div>
 
       <header className="relative z-20 mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:px-6 sm:py-4">

@@ -23,7 +23,6 @@ import {
 } from "@/features/public/use-public-booking";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { LocationLink } from "@/components/brand/location-link";
-import { OccasionPicker } from "@/components/booking/occasion-picker";
 import { LanguageToggle } from "@/components/locale/language-toggle";
 import { useLocale } from "@/components/locale/locale-provider";
 import { Button } from "@/components/ui/button";
@@ -46,7 +45,6 @@ import {
   softSpring,
   stepPanel,
 } from "@/lib/guest-motion";
-import { composeReservationNotes, type OccasionId } from "@/lib/occasions";
 import { PUBLIC_BRANCH_SLUG } from "@/lib/public-branch";
 import { guestBrandClass, guestHeadingClass } from "@/lib/typography";
 import { isGuestTableSelectable } from "@/lib/table-party-size";
@@ -105,7 +103,6 @@ export default function BookPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
-  const [occasion, setOccasion] = useState<OccasionId>("none");
   const [submitted, setSubmitted] = useState<string | null>(null);
 
   const availabilityParams = useMemo(
@@ -163,8 +160,8 @@ export default function BookPage() {
         starts_at: toReservationStartsAt(date, time),
         duration_minutes: RESERVATION_DURATION_MINUTES,
         table_id: selectedTable,
-        notes: composeReservationNotes({ occasion, locale, notes }),
-        is_vip: occasion === "wedding" || occasion === "engagement",
+        notes: notes.trim() || undefined,
+        is_vip: false,
       });
       setSubmitted(res.code || "pending");
     } catch {
@@ -194,31 +191,22 @@ export default function BookPage() {
   const address = branch.data?.address ?? t.location;
 
   return (
-    <main className="relative min-h-dvh bg-forest-700 text-cream-200">
-      <div className="pointer-events-none absolute inset-0 bg-atmosphere-green" aria-hidden />
+    <main className="relative min-h-dvh overflow-x-hidden bg-forest-700 text-cream-200">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden bg-atmosphere-green" aria-hidden />
       {!reduce ? (
         <>
           <motion.div
-            className="pointer-events-none absolute -left-20 top-10 h-72 w-72 rounded-full bg-forest-400/20 blur-3xl"
+            className="pointer-events-none absolute -left-24 top-10 h-64 w-64 rounded-full bg-forest-400/20 blur-3xl"
             animate={driftBlob(16, [0, 24, 0], [0, 18, 0])}
           />
           <motion.div
-            className="pointer-events-none absolute -right-10 bottom-20 h-80 w-80 rounded-full bg-cream-200/10 blur-3xl"
+            className="pointer-events-none absolute -right-24 bottom-24 h-72 w-72 rounded-full bg-cream-200/10 blur-3xl"
             animate={driftBlob(20, [0, -20, 0], [0, -26, 0])}
           />
-          <motion.div
-            className="pointer-events-none absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 rounded-full bg-cream-200/6 blur-3xl"
-            animate={driftBlob(14, [0, 12, -8], [0, -16, 10])}
-          />
         </>
-      ) : (
-        <>
-          <div className="pointer-events-none absolute -left-20 top-10 h-72 w-72 rounded-full bg-forest-400/20 blur-3xl" />
-          <div className="pointer-events-none absolute -right-10 bottom-20 h-80 w-80 rounded-full bg-cream-200/10 blur-3xl" />
-        </>
-      )}
+      ) : null}
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(7.5rem,calc(env(safe-area-inset-bottom)+6rem))] sm:px-8 sm:pt-8 md:px-10 md:pb-24 lg:max-w-7xl lg:px-12 lg:pt-10">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(7.5rem,calc(env(safe-area-inset-bottom)+6rem))] sm:px-6 sm:pt-8 md:px-8 md:pb-24 lg:max-w-7xl lg:px-12 lg:pt-10">
         <motion.div
           className="flex items-center justify-between gap-3"
           initial={reduce ? false : { opacity: 0, y: -12 }}
@@ -226,16 +214,16 @@ export default function BookPage() {
           transition={{ duration: 0.65, ease: softEase }}
         >
           <BrandLogo href="/" size="sm" priority />
-          <div className="flex items-center gap-1">
+          <div className="flex shrink-0 items-center gap-1">
             <LocationLink variant="icon" />
             <LanguageToggle />
           </div>
         </motion.div>
 
         {/* Brand + progress: stacked on phone, side-by-side from iPad */}
-        <div className="mt-7 grid gap-6 md:mt-9 md:grid-cols-[minmax(0,1fr)_minmax(14rem,18rem)] md:items-end md:gap-10 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,22rem)] lg:gap-14">
+        <div className="mt-7 grid min-w-0 gap-6 md:mt-9 md:grid-cols-[minmax(0,1fr)_minmax(14rem,18rem)] md:items-end md:gap-10 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,22rem)] lg:gap-14">
           <motion.div
-            className="text-center md:text-start"
+            className="min-w-0 text-center md:text-start"
             variants={bookStagger}
             initial="hidden"
             animate="show"
@@ -304,7 +292,7 @@ export default function BookPage() {
 
           {!submitted ? (
             <motion.div
-              className="mx-auto w-full max-w-sm md:mx-0 md:max-w-none"
+              className="mx-auto w-full min-w-0 max-w-sm md:mx-0 md:max-w-none"
               initial={reduce ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35, ease: softEase }}
@@ -327,7 +315,7 @@ export default function BookPage() {
                         reduce || !canGoToStep(n) ? undefined : { scale: 0.96 }
                       }
                       className={cn(
-                        "transition-colors",
+                        "min-w-0 truncate transition-colors",
                         active && "text-cream-200",
                         done && "text-cream-200/70",
                         !canGoToStep(n) && "opacity-35"
@@ -335,7 +323,7 @@ export default function BookPage() {
                     >
                       {done ? (
                         <span className="inline-flex items-center gap-1">
-                          <Check className="h-3 w-3" /> {label}
+                          <Check className="h-3 w-3 shrink-0" /> {label}
                         </span>
                       ) : (
                         label
@@ -344,9 +332,9 @@ export default function BookPage() {
                   );
                 })}
               </div>
-              <div className="mt-3 h-px overflow-hidden rounded-full bg-cream-200/15">
+              <div className="mt-3 h-px overflow-hidden bg-gradient-to-r from-transparent via-cream-200/20 to-transparent">
                 <motion.div
-                  className="h-full origin-left bg-cream-200"
+                  className="h-full origin-left bg-gradient-to-r from-transparent via-cream-200 to-transparent"
                   initial={false}
                   animate={{ width: `${(step / 3) * 100}%` }}
                   transition={{ duration: 0.55, ease: softEase }}
@@ -356,7 +344,7 @@ export default function BookPage() {
           ) : null}
         </div>
 
-        <div className="mx-auto mt-8 w-full md:mt-10 lg:mt-12">
+        <div className="mx-auto mt-8 w-full min-w-0 md:mt-10 lg:mt-12">
           <AnimatePresence mode="wait">
             {submitted ? (
               <motion.div
@@ -425,12 +413,12 @@ export default function BookPage() {
               >
                 {step === 1 ? (
                   <motion.div
-                    className="grid gap-8 md:gap-10 lg:grid-cols-[minmax(16rem,22rem)_minmax(0,1fr)] lg:items-start lg:gap-12 xl:gap-16"
+                    className="grid min-w-0 gap-8 md:gap-10 lg:grid-cols-[minmax(16rem,22rem)_minmax(0,1fr)] lg:items-start lg:gap-12 xl:gap-16"
                     variants={bookStagger}
                     initial="hidden"
                     animate="show"
                   >
-                    <div className="space-y-6 md:space-y-7">
+                    <div className="min-w-0 space-y-6 md:space-y-7">
                       <motion.div
                         variants={fadeUp}
                         className="text-center md:text-start"
@@ -450,7 +438,7 @@ export default function BookPage() {
 
                       <motion.div
                         variants={fadeUp}
-                        className="grid gap-6 sm:grid-cols-2 sm:gap-5 lg:grid-cols-1 lg:gap-6"
+                        className="grid min-w-0 gap-6 sm:grid-cols-2 sm:gap-5 lg:grid-cols-1 lg:gap-6"
                       >
                         <label className="block space-y-2.5">
                           <span className="text-[11px] tracking-[0.06em] text-cream-400">
@@ -520,21 +508,11 @@ export default function BookPage() {
                           </div>
                         </div>
                       </motion.div>
-
-                      <motion.div variants={fadeUp}>
-                        <OccasionPicker
-                          value={occasion}
-                          onChange={setOccasion}
-                          locale={locale}
-                          title={t.occasionTitle}
-                          hint={t.occasionHint}
-                        />
-                      </motion.div>
                     </div>
 
                     <motion.div
                       variants={fadeUp}
-                      className="space-y-4 md:rounded-[1.75rem] md:border md:border-cream-200/10 md:bg-forest-800/35 md:px-5 md:py-5 lg:px-6 lg:py-6"
+                      className="min-w-0 space-y-4 md:rounded-[1.75rem] md:border md:border-cream-200/10 md:bg-forest-800/35 md:px-5 md:py-5 lg:px-6 lg:py-6"
                     >
                       <div className="flex items-end justify-between gap-3">
                         <div>
@@ -587,7 +565,7 @@ export default function BookPage() {
                                 {groupLabel}
                               </p>
                               <motion.div
-                                className="flex flex-wrap gap-1.5 md:gap-2"
+                                className="flex min-w-0 flex-wrap gap-1.5 md:gap-2"
                                 variants={chipStagger}
                                 initial="hidden"
                                 animate="show"
@@ -615,7 +593,7 @@ export default function BookPage() {
                                       aria-pressed={active}
                                       aria-label={t12.labelFull}
                                       className={cn(
-                                        "h-10 min-w-[4.25rem] rounded-full px-3.5 text-sm font-medium tabular-nums transition-colors md:h-11 md:min-w-[4.5rem]",
+                                        "h-10 min-w-[3.75rem] shrink-0 rounded-full px-3 text-sm font-medium tabular-nums transition-colors md:h-11 md:min-w-[4.5rem] md:px-3.5",
                                         active
                                           ? "bg-cream-200 text-forest-800 shadow-soft"
                                           : "border border-cream-200/10 bg-forest-800/45 text-cream-200/85 hover:border-cream-200/25"
@@ -635,7 +613,7 @@ export default function BookPage() {
                 ) : null}
 
                 {step === 2 ? (
-                  <div className="grid gap-6 md:gap-8 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)] lg:items-start lg:gap-10 xl:grid-cols-[minmax(18rem,22rem)_minmax(0,1fr)] xl:gap-12">
+                  <div className="grid min-w-0 gap-6 md:gap-8 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)] lg:items-start lg:gap-10 xl:grid-cols-[minmax(18rem,22rem)_minmax(0,1fr)] xl:gap-12">
                     <motion.div
                       className="space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 lg:block lg:space-y-4"
                       variants={bookStagger}
@@ -804,7 +782,7 @@ export default function BookPage() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 16, opacity: 0 }}
             transition={{ duration: 0.45, delay: 0.2, ease: softEase }}
-            className="fixed inset-x-0 bottom-0 z-30 border-t border-cream-200/10 bg-forest-800/95 px-4 pt-3 pb-[max(0.9rem,env(safe-area-inset-bottom))] backdrop-blur-2xl md:px-8 lg:px-12"
+            className="fixed inset-x-0 bottom-0 z-30 border-t border-cream-200/10 bg-forest-800/95 px-4 pt-3 pb-[max(0.9rem,env(safe-area-inset-bottom))] backdrop-blur-2xl sm:px-6 md:px-8 lg:px-12"
           >
             <div className="mx-auto flex w-full max-w-lg gap-2 md:max-w-2xl lg:max-w-3xl">
               {step > 1 ? (
