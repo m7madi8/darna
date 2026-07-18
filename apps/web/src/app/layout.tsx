@@ -35,6 +35,7 @@ const cairo = Cairo({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://darna-wine.vercel.app"),
   title: {
     default: "DARNA · دارنا",
     template: "%s · DARNA",
@@ -44,6 +45,30 @@ export const metadata: Metadata = {
   icons: {
     icon: "/logo1.png",
     apple: "/logo1.png",
+  },
+  openGraph: {
+    type: "website",
+    locale: "ar_PS",
+    url: "/",
+    siteName: "DARNA",
+    title: "DARNA · دارنا",
+    description:
+      "دارنا — احجز طاولتك في رام الله | Darna — reserve your table in the heart of Ramallah",
+    images: [
+      {
+        url: "/darnaramallah.jpg",
+        width: 1080,
+        height: 1080,
+        alt: "DARNA · دارنا",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DARNA · دارنا",
+    description:
+      "دارنا — احجز طاولتك في رام الله | Darna — reserve your table in the heart of Ramallah",
+    images: ["/darnaramallah.jpg"],
   },
   appleWebApp: {
     capable: true,
