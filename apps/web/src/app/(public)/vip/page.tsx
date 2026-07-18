@@ -30,6 +30,7 @@ import {
   composeReservationNotes,
   occasionLabel,
   type OccasionId,
+  type OccasionOption,
 } from "@/lib/occasions";
 import { PUBLIC_BRANCH_SLUG } from "@/lib/public-branch";
 import { guestHeadingClass } from "@/lib/typography";
@@ -343,7 +344,7 @@ export default function VipPage() {
               </div>
 
               {/* Steps */}
-              <div className="relative mt-8 min-h-[22rem]">
+              <div className="relative mt-8 min-h-[18rem]">
                 <AnimatePresence mode="wait" custom={slideDir}>
                   {step === 1 ? (
                     <motion.section
@@ -353,9 +354,9 @@ export default function VipPage() {
                       initial="enter"
                       animate="center"
                       exit="exit"
-                      className="space-y-5"
+                      className="space-y-6"
                     >
-                      <div className="text-center sm:text-start">
+                      <div className="text-center">
                         <h2
                           className={guestHeadingClass(
                             locale,
@@ -364,57 +365,18 @@ export default function VipPage() {
                         >
                           {t.occasionTitle}
                         </h2>
-                        <p className="mt-2 text-sm text-cream-200/50">
+                        <p className="mx-auto mt-2 max-w-md text-sm text-cream-200/50">
                           {t.occasionHint}
                         </p>
                       </div>
 
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        {vipOccasions.map((o, i) => {
-                          const active = occasion === o.id;
-                          return (
-                            <motion.button
-                              key={o.id}
-                              type="button"
-                              initial={
-                                reduce
-                                  ? false
-                                  : { opacity: 0, y: 16 }
-                              }
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{
-                                delay: 0.04 * i,
-                                duration: 0.45,
-                                ease: stepEase,
-                              }}
-                              onClick={() => setOccasion(o.id)}
-                              className={cn(
-                                "rounded-2xl border px-4 py-4 text-start transition",
-                                active
-                                  ? "border-[#d4c4a0]/55 bg-[#d4c4a0]/10 shadow-[0_0_0_1px_rgba(212,196,160,0.15)]"
-                                  : "border-cream-200/10 bg-white/[0.03] hover:border-cream-200/25"
-                              )}
-                            >
-                              <span
-                                className={guestHeadingClass(
-                                  locale,
-                                  "block text-lg text-cream-50"
-                                )}
-                              >
-                                {occasionLabel(o.id, locale)}
-                              </span>
-                              <span className="mt-1 block text-[12px] leading-relaxed text-cream-200/45">
-                                {o.hint[locale]}
-                              </span>
-                              {o.featured ? (
-                                <span className="mt-2 inline-block text-[10px] tracking-[0.16em] text-[#d4c4a0]/70">
-                                  VIP
-                                </span>
-                              ) : null}
-                            </motion.button>
-                          );
-                        })}
-                      </div>
+                      <OccasionPicker
+                        occasions={vipOccasions}
+                        value={occasion}
+                        onChange={setOccasion}
+                        locale={locale}
+                        reduce={Boolean(reduce)}
+                      />
 
                       <StepNav
                         onBack={null}
@@ -712,6 +674,136 @@ export default function VipPage() {
         )}
       </AnimatePresence>
     </main>
+  );
+}
+
+function OccasionPicker({
+  occasions,
+  value,
+  onChange,
+  locale,
+  reduce,
+}: {
+  occasions: OccasionOption[];
+  value: OccasionId;
+  onChange: (id: OccasionId) => void;
+  locale: "ar" | "en";
+  reduce: boolean;
+}) {
+  const selected = occasions.find((o) => o.id === value) ?? occasions[0];
+
+  return (
+    <div className="space-y-5">
+      {/* Selected stage — one rich preview instead of repeating hints */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={selected.id}
+          initial={
+            reduce
+              ? false
+              : { opacity: 0, y: 10, filter: "blur(8px)" }
+          }
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -8, filter: "blur(6px)" }}
+          transition={{ duration: 0.4, ease: stepEase }}
+          className="relative overflow-hidden px-1 py-5 text-center"
+        >
+          <div
+            className="pointer-events-none absolute inset-x-8 top-1/2 h-24 -translate-y-1/2 rounded-full bg-[#d4c4a0]/[0.07] blur-2xl"
+            aria-hidden
+          />
+          <div className="relative mx-auto mb-4 flex h-10 w-10 items-center justify-center">
+            <span className="absolute inset-0 rounded-full border border-[#d4c4a0]/25" />
+            <Gem className="relative h-4 w-4 text-[#e8dcc0]" />
+          </div>
+          <p
+            className={guestHeadingClass(
+              locale,
+              "text-[1.65rem] leading-tight text-cream-50 sm:text-3xl"
+            )}
+          >
+            {occasionLabel(selected.id, locale)}
+          </p>
+          <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-cream-200/55">
+            {selected.hint[locale]}
+          </p>
+          <div
+            className="mx-auto mt-5 h-px w-24 bg-gradient-to-r from-transparent via-[#d4c4a0]/55 to-transparent"
+            aria-hidden
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Compact menu — names only, no stacked cards */}
+      <div
+        role="listbox"
+        aria-label={locale === "ar" ? "نوع المناسبة" : "Occasion"}
+        className="relative"
+      >
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cream-200/20 to-transparent"
+          aria-hidden
+        />
+        <div className="grid grid-cols-2 gap-x-3 gap-y-1 py-2 sm:grid-cols-3 sm:gap-x-4">
+          {occasions.map((o, i) => {
+            const active = value === o.id;
+            return (
+              <motion.button
+                key={o.id}
+                type="button"
+                role="option"
+                aria-selected={active}
+                initial={reduce ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.03 * i,
+                  duration: 0.4,
+                  ease: stepEase,
+                }}
+                whileTap={reduce ? undefined : { scale: 0.97 }}
+                onClick={() => onChange(o.id)}
+                className={cn(
+                  "group relative flex min-h-[3rem] items-center justify-center px-2 py-2.5 text-center transition",
+                  active
+                    ? "text-[#f0e6d0]"
+                    : "text-cream-200/45 hover:text-cream-200/75"
+                )}
+              >
+                {active ? (
+                  <motion.span
+                    layoutId="occasion-glow"
+                    className="absolute inset-x-1 inset-y-1 rounded-xl bg-[#d4c4a0]/[0.09]"
+                    transition={{ duration: 0.35, ease: stepEase }}
+                    aria-hidden
+                  />
+                ) : null}
+                <span
+                  className={cn(
+                    "relative z-[1] text-[13px] leading-snug tracking-wide sm:text-sm",
+                    active &&
+                      guestHeadingClass(locale, "text-[15px] sm:text-base")
+                  )}
+                >
+                  {occasionLabel(o.id, locale)}
+                </span>
+                {active ? (
+                  <motion.span
+                    layoutId="occasion-underline"
+                    className="absolute inset-x-5 bottom-1.5 h-px bg-gradient-to-r from-transparent via-[#e8dcc0]/70 to-transparent"
+                    transition={{ duration: 0.35, ease: stepEase }}
+                    aria-hidden
+                  />
+                ) : null}
+              </motion.button>
+            );
+          })}
+        </div>
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cream-200/20 to-transparent"
+          aria-hidden
+        />
+      </div>
+    </div>
   );
 }
 
