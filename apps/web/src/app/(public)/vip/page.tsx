@@ -44,20 +44,17 @@ const stepEase = softEase;
 const panel = {
   enter: (dir: number) => ({
     opacity: 0,
-    x: dir > 0 ? 36 : -36,
-    filter: "blur(10px)",
+    x: dir > 0 ? 20 : -20,
   }),
   center: {
     opacity: 1,
     x: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.55, ease: stepEase },
+    transition: { duration: 0.45, ease: stepEase },
   },
   exit: (dir: number) => ({
     opacity: 0,
-    x: dir > 0 ? -28 : 28,
-    filter: "blur(8px)",
-    transition: { duration: 0.35, ease: stepEase },
+    x: dir > 0 ? -16 : 16,
+    transition: { duration: 0.3, ease: stepEase },
   }),
 };
 
@@ -131,7 +128,7 @@ export default function VipPage() {
   }
 
   return (
-    <main className="relative min-h-dvh overflow-x-hidden bg-[#050908] text-cream-100">
+    <main className="relative min-h-dvh bg-[#050908] text-cream-100">
       <Atmosphere reduce={Boolean(reduce)} />
 
       <motion.header
@@ -167,9 +164,9 @@ export default function VipPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Hero with soft bottom fade into page (like reference blend) */}
-            <section className="relative isolate w-full overflow-hidden">
-              <div className="absolute inset-0" aria-hidden>
+            {/* Hero — media clipped in its own layer; content never clipped */}
+            <section className="relative isolate w-full">
+              <div className="absolute inset-0 overflow-hidden" aria-hidden>
                 <Image
                   src="/hero-dining.jpg"
                   alt=""
@@ -178,10 +175,8 @@ export default function VipPage() {
                   sizes="100vw"
                   className="object-cover object-[center_30%] scale-105"
                 />
-                {/* Darken photo so logo/text read clearly */}
                 <div className="absolute inset-0 bg-[#050908]/55" />
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,rgba(196,180,138,0.16),transparent_55%)]" />
-                {/* Soft blend into page — long fade, not a hard cut */}
                 <div
                   className="absolute inset-x-0 bottom-0 h-[55%] sm:h-[50%]"
                   style={{
@@ -189,23 +184,21 @@ export default function VipPage() {
                       "linear-gradient(to bottom, rgba(5,9,8,0) 0%, rgba(5,9,8,0.25) 28%, rgba(5,9,8,0.65) 58%, rgba(5,9,8,0.92) 82%, #050908 100%)",
                   }}
                 />
+                {!reduce ? (
+                  <motion.div
+                    className="pointer-events-none absolute -left-1/4 top-0 h-full w-1/2 skew-x-12 bg-gradient-to-r from-transparent via-cream-100/8 to-transparent"
+                    animate={{ x: ["-20%", "180%"] }}
+                    transition={{
+                      duration: 9.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      repeatDelay: 2.5,
+                    }}
+                  />
+                ) : null}
               </div>
 
-              {!reduce ? (
-                <motion.div
-                  className="pointer-events-none absolute -left-1/4 top-0 h-full w-1/2 skew-x-12 bg-gradient-to-r from-transparent via-cream-100/8 to-transparent"
-                  animate={{ x: ["-20%", "180%"] }}
-                  transition={{
-                    duration: 9.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    repeatDelay: 2.5,
-                  }}
-                  aria-hidden
-                />
-              ) : null}
-
-              <div className="relative z-10 mx-auto flex min-h-[min(78dvh,42rem)] w-full max-w-4xl flex-col items-center justify-center px-5 pb-28 pt-20 text-center sm:pb-36 sm:pt-24">
+              <div className="relative z-10 mx-auto flex min-h-[min(78dvh,42rem)] w-full max-w-4xl flex-col items-center justify-center px-5 pb-24 pt-20 text-center sm:pb-28 sm:pt-24">
                 <motion.div
                   initial={reduce ? false : { opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -243,29 +236,17 @@ export default function VipPage() {
                   ) : null}
                 </motion.div>
 
-                <motion.h1
-                  initial={
-                    reduce
-                      ? false
-                      : { opacity: 0, y: 28, scale: 0.94, filter: "blur(12px)" }
-                  }
-                  animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                  transition={{ duration: 1.05, delay: 0.28, ease: stepEase }}
-                  className={cn(
-                    "mt-6 font-brand leading-none tracking-[0.28em]",
-                    "bg-gradient-to-b from-[#f7f1dc] via-[#e4d3a4] to-[#9a8860] bg-clip-text text-transparent",
-                    "text-[clamp(4rem,22vw,8.5rem)]",
-                    locale === "ar" && "tracking-[0.18em]"
-                  )}
-                >
-                  {t.vipTitle}
-                </motion.h1>
+                <VipWordmark
+                  label={t.vipTitle}
+                  reduce={Boolean(reduce)}
+                  locale={locale}
+                />
 
                 <motion.p
                   initial={reduce ? false : { opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.9, delay: 0.45, ease: stepEase }}
-                  className="mx-auto mt-6 max-w-md text-[15px] leading-relaxed text-cream-100/70 sm:text-lg"
+                  transition={{ duration: 0.9, delay: 0.55, ease: stepEase }}
+                  className="mx-auto mt-7 max-w-md text-[15px] leading-relaxed text-cream-100/70 sm:text-lg"
                 >
                   {t.vipTagline}
                 </motion.p>
@@ -273,7 +254,7 @@ export default function VipPage() {
                 <motion.div
                   initial={reduce ? false : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.85, delay: 0.55, ease: stepEase }}
+                  transition={{ duration: 0.85, delay: 0.65, ease: stepEase }}
                   className="mt-10 flex flex-col items-center gap-5"
                 >
                   <motion.div
@@ -300,11 +281,11 @@ export default function VipPage() {
 
             <div
               id="vip-journey"
-              className="relative z-10 mx-auto -mt-10 w-full max-w-2xl scroll-mt-6 bg-transparent px-4 pb-[max(3rem,env(safe-area-inset-bottom))] pt-2 sm:-mt-14 sm:max-w-3xl sm:px-8 sm:pb-20"
+              className="relative z-10 mx-auto w-full max-w-2xl scroll-mt-8 bg-transparent px-4 pb-[max(3rem,env(safe-area-inset-bottom))] pt-4 sm:max-w-3xl sm:px-8 sm:pb-20 sm:pt-6"
             >
               {/* Progress */}
-              <div className="mx-auto max-w-md">
-                <div className="flex items-center justify-between text-[11px] tracking-[0.14em] text-cream-200/40">
+              <div className="mx-auto max-w-md px-1">
+                <div className="flex items-center justify-between gap-3 text-[11px] leading-none tracking-[0.12em] text-cream-200/40">
                   {[t.occasionTitle, t.evening, t.details].map((label, i) => {
                     const n = (i + 1) as Step;
                     const active = step === n;
@@ -317,14 +298,15 @@ export default function VipPage() {
                           if (n < step) go(n);
                         }}
                         className={cn(
-                          "transition",
+                          "py-1 transition",
                           active && "text-cream-200",
                           done && "text-cream-200/70"
                         )}
                       >
                         {done ? (
                           <span className="inline-flex items-center gap-1">
-                            <Check className="h-3 w-3" /> {label}
+                            <Check className="h-3 w-3 shrink-0" />
+                            <span>{label}</span>
                           </span>
                         ) : (
                           label
@@ -333,7 +315,7 @@ export default function VipPage() {
                     );
                   })}
                 </div>
-                <div className="mt-3 h-px overflow-hidden bg-gradient-to-r from-transparent via-cream-200/20 to-transparent">
+                <div className="mt-3 h-px bg-gradient-to-r from-transparent via-cream-200/20 to-transparent">
                   <motion.div
                     className="h-full origin-left bg-gradient-to-r from-transparent via-[#e8dcc0] to-transparent"
                     initial={false}
@@ -356,16 +338,16 @@ export default function VipPage() {
                       exit="exit"
                       className="space-y-6"
                     >
-                      <div className="text-center">
+                      <div className="space-y-1.5 text-center sm:text-start">
                         <h2
                           className={guestHeadingClass(
                             locale,
-                            "text-2xl text-cream-100 sm:text-3xl"
+                            "text-2xl leading-[1.35] text-cream-100 sm:text-3xl"
                           )}
                         >
                           {t.occasionTitle}
                         </h2>
-                        <p className="mx-auto mt-2 max-w-md text-sm text-cream-200/50">
+                        <p className="text-sm leading-relaxed text-cream-200/50">
                           {t.occasionHint}
                         </p>
                       </div>
@@ -398,16 +380,16 @@ export default function VipPage() {
                       exit="exit"
                       className="space-y-6"
                     >
-                      <div className="text-center sm:text-start">
+                      <div className="space-y-1.5 text-center sm:text-start">
                         <h2
                           className={guestHeadingClass(
                             locale,
-                            "text-2xl text-cream-100 sm:text-3xl"
+                            "text-2xl leading-[1.35] text-cream-100 sm:text-3xl"
                           )}
                         >
                           {t.whichEvening}
                         </h2>
-                        <p className="mt-2 text-sm text-cream-200/50">
+                        <p className="text-sm leading-relaxed text-cream-200/50">
                           {t.vipDuration}
                         </p>
                       </div>
@@ -544,16 +526,16 @@ export default function VipPage() {
                       exit="exit"
                       className="space-y-6"
                     >
-                      <div className="text-center sm:text-start">
+                      <div className="space-y-1.5 text-center sm:text-start">
                         <h2
                           className={guestHeadingClass(
                             locale,
-                            "text-2xl text-cream-100 sm:text-3xl"
+                            "text-2xl leading-[1.35] text-cream-100 sm:text-3xl"
                           )}
                         >
                           {t.vipRequestTitle}
                         </h2>
-                        <p className="mt-2 text-sm text-cream-200/50">
+                        <p className="text-sm leading-relaxed text-cream-200/50">
                           {t.vipRequestHint}
                         </p>
                       </div>
@@ -677,6 +659,74 @@ export default function VipPage() {
   );
 }
 
+function VipWordmark({
+  label,
+  reduce,
+  locale,
+}: {
+  label: string;
+  reduce: boolean;
+  locale: "ar" | "en";
+}) {
+  const caption = locale === "ar" ? "تجربة خاصة" : "Private experience";
+
+  return (
+    <h1
+      className="relative mt-8 w-full max-w-[min(100%,22rem)] select-none px-3 sm:max-w-md"
+      dir="ltr"
+      lang="en"
+    >
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-24 w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d4c4a0]/[0.1] blur-3xl"
+        aria-hidden
+      />
+
+      <motion.div
+        className="relative flex w-full flex-col items-center"
+        initial={reduce ? false : { opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.05, delay: 0.22, ease: stepEase }}
+      >
+        <div className="mb-4 flex items-center gap-3" aria-hidden>
+          <span className="h-px w-10 bg-gradient-to-r from-transparent to-[#d4c4a0]/55 sm:w-14" />
+          <span className="relative flex h-6 w-6 items-center justify-center">
+            <span className="absolute inset-0 rounded-full border border-[#e8dcc0]/30" />
+            <Gem className="relative h-3 w-3 text-[#e8dcc0]" strokeWidth={1.5} />
+          </span>
+          <span className="h-px w-10 bg-gradient-to-l from-transparent to-[#d4c4a0]/55 sm:w-14" />
+        </div>
+
+        <motion.span
+          initial={reduce ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.38, ease: stepEase }}
+          className="vip-wordmark text-center text-[clamp(3rem,14vw,5.75rem)]"
+        >
+          {label}
+        </motion.span>
+
+        <div className="mt-4 flex flex-col items-center gap-2.5" aria-hidden>
+          <div className="flex items-center gap-2.5">
+            <span className="h-px w-14 bg-gradient-to-r from-transparent via-[#d4c4a0]/50 to-transparent sm:w-20" />
+            <span className="text-[7px] text-[#e8dcc0]/70">◆</span>
+            <span className="h-px w-14 bg-gradient-to-r from-transparent via-[#d4c4a0]/50 to-transparent sm:w-20" />
+          </div>
+          <p
+            className={cn(
+              "text-[10px] leading-normal text-[#e8dcc0]/55 sm:text-[11px]",
+              locale === "ar"
+                ? "aref-ruqaa-regular tracking-[0.22em]"
+                : "vip-caption"
+            )}
+          >
+            {caption}
+          </p>
+        </div>
+      </motion.div>
+    </h1>
+  );
+}
+
 function OccasionPicker({
   occasions,
   value,
@@ -698,15 +748,11 @@ function OccasionPicker({
       <AnimatePresence mode="wait">
         <motion.div
           key={selected.id}
-          initial={
-            reduce
-              ? false
-              : { opacity: 0, y: 10, filter: "blur(8px)" }
-          }
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -8, filter: "blur(6px)" }}
-          transition={{ duration: 0.4, ease: stepEase }}
-          className="relative overflow-hidden px-1 py-5 text-center"
+          initial={reduce ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.35, ease: stepEase }}
+          className="relative px-1 py-4 text-center"
         >
           <div
             className="pointer-events-none absolute inset-x-8 top-1/2 h-24 -translate-y-1/2 rounded-full bg-[#d4c4a0]/[0.07] blur-2xl"

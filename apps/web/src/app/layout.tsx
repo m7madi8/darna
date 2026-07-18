@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cairo, Montserrat } from "next/font/google";
+import { Cairo, Cinzel, Montserrat } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./fonts-aref-ruqaa.css";
 import "./globals.css";
@@ -12,6 +12,14 @@ const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["500"],
   variable: "--font-montserrat",
+  display: "swap",
+});
+
+/** VIP display — classical luxury serif */
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-vip",
   display: "swap",
 });
 
@@ -88,7 +96,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={`${montserrat.variable} ${cairo.variable} ${cairo.className}`}>
+      <body
+        className={`${montserrat.variable} ${cinzel.variable} ${cairo.variable} ${cairo.className}`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

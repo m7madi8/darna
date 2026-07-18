@@ -199,6 +199,64 @@
   line-height: 1.05;
 }
 
+/* VIP luxury wordmark — gold foil serif (hero only) */
+.vip-wordmark {
+  font-family: var(--font-vip), Cinzel, Georgia, "Times New Roman", serif !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+  /* Keep tracking modest so letters stay inside the viewport */
+  letter-spacing: 0.22em !important;
+  line-height: 1.25;
+  font-feature-settings: "kern" 1, "liga" 1;
+  display: inline-block;
+  max-width: 100%;
+  /* Optical balance for trailing letter-spacing */
+  padding-inline: 0.08em 0.3em;
+  padding-block: 0.15em 0.1em;
+  background-image: linear-gradient(
+    165deg,
+    #fffdf5 0%,
+    #f8efd4 10%,
+    #e8d19a 22%,
+    #c9a55c 34%,
+    #f5e6b8 46%,
+    #b89248 58%,
+    #efe2b4 70%,
+    #9a7a3e 84%,
+    #dcc58a 100%
+  );
+  background-size: 220% 220%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #e8dcc0; /* fallback if clip unsupported */
+  -webkit-text-fill-color: transparent;
+}
+
+.vip-caption {
+  font-family: var(--font-vip), Cinzel, Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  /* Cancel trailing tracking so the caption stays centered */
+  padding-inline-end: 0.4em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .vip-wordmark {
+    animation: vip-foil-drift 7.5s ease-in-out infinite;
+  }
+}
+
+@keyframes vip-foil-drift {
+  0%,
+  100% {
+    background-position: 8% 30%;
+  }
+  50% {
+    background-position: 92% 70%;
+  }
+}
+
 @layer utilities {
   .glass {
     @apply border border-[color:var(--border)] bg-[color:var(--card)] shadow-soft backdrop-blur-xl;

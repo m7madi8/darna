@@ -97,6 +97,8 @@ const config: Config = {
           "Montserrat",
           "sans-serif",
         ],
+        /** VIP luxury display */
+        vip: ["var(--font-vip)", "Cinzel", "Georgia", "serif"],
         /** Arabic display — Aref Ruqaa */
         aref: ['"Aref Ruqaa"', "serif"],
         /** Staff / UI display (Latin) */
