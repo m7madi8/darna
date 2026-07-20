@@ -257,6 +257,63 @@
   }
 }
 
+/* Events page — luminous gold wordmark */
+.events-wordmark {
+  font-family: var(--font-vip), Cinzel, Georgia, "Times New Roman", serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.18em !important;
+  line-height: 1.2;
+  display: inline-block;
+  max-width: 100%;
+  padding-inline: 0.06em 0.28em;
+  background-image: linear-gradient(
+    140deg,
+    #fffef8 0%,
+    #f7ecd0 12%,
+    #e8d19a 28%,
+    #c9a55c 40%,
+    #fff6d6 52%,
+    #b89248 64%,
+    #efe2b4 78%,
+    #d4b56a 100%
+  );
+  background-size: 240% 240%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #e8dcc0;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.35));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .events-wordmark {
+    animation: vip-foil-drift 8.5s ease-in-out infinite;
+  }
+}
+
+@keyframes events-ember-rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-120px) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes events-shimmer {
+  0% {
+    background-position: -120% 0;
+  }
+  100% {
+    background-position: 220% 0;
+  }
+}
+
 @layer utilities {
   .glass {
     @apply border border-[color:var(--border)] bg-[color:var(--card)] shadow-soft backdrop-blur-xl;

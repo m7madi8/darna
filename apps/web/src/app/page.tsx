@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BrandLogo } from "@/components/brand/brand-logo";
-import { LocationLink, VipLink } from "@/components/brand/location-link";
+import { EventsLink, LocationLink, VipLink } from "@/components/brand/location-link";
 import { LanguageToggle } from "@/components/locale/language-toggle";
 import { useLocale } from "@/components/locale/locale-provider";
 import { Button } from "@/components/ui/button";
@@ -163,7 +163,7 @@ export default function HomePage() {
 
             <motion.div
               variants={fadeUp}
-              className="mt-5 flex w-full flex-col gap-2.5 sm:mt-7 sm:w-auto sm:flex-row sm:items-center sm:gap-3"
+              className="mt-5 flex w-full flex-col gap-2.5 sm:mt-7 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-3"
             >
               <motion.div
                 className="w-full sm:w-auto"
@@ -202,6 +202,14 @@ export default function HomePage() {
                 transition={softSpring}
               >
                 <VipLink />
+              </motion.div>
+              <motion.div
+                className="w-full sm:w-auto"
+                whileHover={reduce ? undefined : { scale: 1.02 }}
+                whileTap={reduce ? undefined : { scale: 0.98 }}
+                transition={softSpring}
+              >
+                <EventsLink />
               </motion.div>
             </motion.div>
           </div>

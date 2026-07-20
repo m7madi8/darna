@@ -18,6 +18,30 @@ type Msg = {
   vipEyebrow: string;
   vipTitle: string;
   vipTagline: string;
+  eventsCta: string;
+  eventsEyebrow: string;
+  eventsTitle: string;
+  eventsTagline: string;
+  eventsHeroCta: string;
+  eventsPackagesTitle: string;
+  eventsPackagesHint: string;
+  eventsPerGuest: string;
+  eventsGuestsRange: (min: number, max: number) => string;
+  eventsIncludes: string;
+  eventsExtrasTitle: string;
+  eventsExtrasHint: string;
+  eventsQuoteTitle: string;
+  eventsQuoteHint: string;
+  eventsSubmit: string;
+  eventsDisclaimer: string;
+  eventsReceived: string;
+  eventsPending: (code: string) => string;
+  eventsEstimate: string;
+  eventsEventDate: string;
+  eventsGuestCount: string;
+  eventsBackHome: string;
+  eventsAdd: string;
+  eventsRemove: string;
   perkTable: string;
   perkHost: string;
   perkParty: string;
@@ -127,6 +151,32 @@ export const messages: Record<Locale, Msg> = {
     vipTitle: "VIP",
     vipTagline:
       "أمسية بطابع خاص — طاولة مفضّلة، استقبال شخصي، وترتيب يليق بالمناسبات والأفراح.",
+    eventsCta: "مناسبات وتموين",
+    eventsEyebrow: "لحظة تليق بالذهب · خارج القاعة",
+    eventsTitle: "مناسبات",
+    eventsTagline:
+      "أفراح ومناسبات تُروى — تموين دارنا يفتح القوس على مائدة تُضيء الليلة كلها.",
+    eventsHeroCta: "ادخلوا عالم الباقات",
+    eventsPackagesTitle: "باقات ومزاياها",
+    eventsPackagesHint: "كل باقة بمزاياها كاملة — اختاروا ما يليق بمناسبتكم.",
+    eventsPerGuest: "للضيف",
+    eventsGuestsRange: (min, max) => `من ${min} إلى ${max} ضيفًا`,
+    eventsIncludes: "تشمل",
+    eventsExtrasTitle: "فريقكم الخاص",
+    eventsExtrasHint: "أضيفوا شيفًا أو طاقم خدمة… وكأن دارنا جاءت إليكم.",
+    eventsQuoteTitle: "اكتبوا دعوة مناسبتكم",
+    eventsQuoteHint: "نراجع التفاصيل ونردّ عليكم بترتيب يليق باللحظة.",
+    eventsSubmit: "إرسال طلب المناسبة",
+    eventsDisclaimer: "الأسعار تقديرية وتُؤكَّد حسب التاريخ وعدد الضيوف وموقع المناسبة.",
+    eventsReceived: "وصل طلب مناسبتكم",
+    eventsPending: (code) =>
+      `طلبكم ${code} بين أيدينا — سنتواصل معكم قريبًا لترتيب التفاصيل.`,
+    eventsEstimate: "التقدير الأولي",
+    eventsEventDate: "تاريخ المناسبة",
+    eventsGuestCount: "عدد الضيوف",
+    eventsBackHome: "العودة للرئيسية",
+    eventsAdd: "إضافة",
+    eventsRemove: "إزالة",
     perkTable: "طاولة مميزة في أفضل المواقع داخل القاعة",
     perkHost: "استقبال وعناية خاصة طوال الأمسية",
     perkParty: "مناسب للمجموعات حتى ٤٠ ضيفًا",
@@ -211,6 +261,33 @@ export const messages: Record<Locale, Msg> = {
     vipTitle: "VIP",
     vipTagline:
       "An elevated evening — preferred seating, personal hosting, and arrangements for celebrations & weddings.",
+    eventsCta: "Events & catering",
+    eventsEyebrow: "A golden hour · beyond the dining room",
+    eventsTitle: "Events",
+    eventsTagline:
+      "Weddings and private occasions, told in light — Darna catering opens the arch onto a table that carries the night.",
+    eventsHeroCta: "Enter the packages",
+    eventsPackagesTitle: "Packages & inclusions",
+    eventsPackagesHint: "Four fixed per-guest packages — every inclusion listed clearly.",
+    eventsPerGuest: "per guest",
+    eventsGuestsRange: (min, max) => `${min}–${max} guests`,
+    eventsIncludes: "Includes",
+    eventsExtrasTitle: "Your private team",
+    eventsExtrasHint: "Add a chef or service staff — as if Darna came to you.",
+    eventsQuoteTitle: "Write your invitation",
+    eventsQuoteHint: "We review the details and reply with an arrangement worthy of the moment.",
+    eventsSubmit: "Send event request",
+    eventsDisclaimer:
+      "Prices are estimates and confirmed by date, guest count, and venue.",
+    eventsReceived: "Event request received",
+    eventsPending: (code) =>
+      `Request ${code} is with us — we’ll reach out shortly to arrange the details.`,
+    eventsEstimate: "Initial estimate",
+    eventsEventDate: "Event date",
+    eventsGuestCount: "Guest count",
+    eventsBackHome: "Back to home",
+    eventsAdd: "Add",
+    eventsRemove: "Remove",
     perkTable: "Preferred table in the best room positions",
     perkHost: "Attentive hosting throughout your evening",
     perkParty: "Groups up to 40 guests",
