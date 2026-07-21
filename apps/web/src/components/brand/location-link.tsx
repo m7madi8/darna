@@ -99,8 +99,8 @@ type EventsLinkProps = {
   className?: string;
 };
 
-/** Guest CTA — events & catering entry */
-export function EventsLink({ href = "/events", className }: EventsLinkProps) {
+/** Guest CTA — catering entry */
+export function EventsLink({ href = "/catering", className }: EventsLinkProps) {
   const { t } = useLocale();
 
   return (

@@ -3,12 +3,11 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Sparkles, UtensilsCrossed, Wine } from "lucide-react";
 import { BrandLogo } from "@/components/brand/brand-logo";
-import { EventsLink, LocationLink, VipLink } from "@/components/brand/location-link";
+import { LocationLink } from "@/components/brand/location-link";
 import { LanguageToggle } from "@/components/locale/language-toggle";
 import { useLocale } from "@/components/locale/locale-provider";
-import { Button } from "@/components/ui/button";
 import {
   fadeUp,
   floatSoft,
@@ -18,16 +17,43 @@ import {
   softSpring,
 } from "@/lib/guest-motion";
 import { guestBrandClass } from "@/lib/typography";
+import { cn } from "@/lib/utils";
+
+const SECTIONS = [
+  {
+    href: "/restaurant",
+    key: "restaurant" as const,
+    icon: UtensilsCrossed,
+    primary: true,
+  },
+  {
+    href: "/lounge",
+    key: "lounge" as const,
+    icon: Wine,
+    primary: false,
+  },
+  {
+    href: "/catering",
+    key: "catering" as const,
+    icon: Sparkles,
+    primary: false,
+    gold: true,
+  },
+] as const;
 
 export default function HomePage() {
-  const { t, dir, locale } = useLocale();
-  const CtaArrow = dir === "rtl" ? ArrowLeft : ArrowRight;
+  const { t, locale } = useLocale();
   const isEnglish = locale === "en";
   const reduce = useReducedMotion();
 
+  const labels = {
+    restaurant: t.restaurant,
+    lounge: t.lounge,
+    catering: t.eventsCta,
+  };
+
   return (
     <div className="relative min-h-dvh overflow-x-hidden bg-forest-700">
-      {/* Full-bleed scene — overlay covers every edge, no side cut-off */}
       <div
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
         aria-hidden
@@ -69,12 +95,9 @@ export default function HomePage() {
           />
         </motion.div>
 
-        {/* Even forest veil — same strength left & right */}
         <div className="absolute inset-0 bg-forest-700/62" />
-        {/* Soft vertical depth only (no side-biased gradient) */}
         <div className="absolute inset-0 bg-gradient-to-b from-forest-800/45 via-transparent to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-forest-800/85 via-forest-700/20 to-transparent" />
-        {/* Soft bottom blend into page */}
         <div
           className="absolute inset-x-0 bottom-0 h-[42%]"
           style={{
@@ -165,52 +188,37 @@ export default function HomePage() {
               variants={fadeUp}
               className="mt-5 flex w-full flex-col gap-2.5 sm:mt-7 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-3"
             >
-              <motion.div
-                className="w-full sm:w-auto"
-                whileHover={reduce ? undefined : { scale: 1.03, y: -2 }}
-                whileTap={reduce ? undefined : { scale: 0.97 }}
-                transition={softSpring}
-              >
-                <Link href="/reservation" className="block w-full sm:w-auto">
-                  <Button size="lg" className="w-full rounded-full px-8 sm:w-auto">
-                    {t.reserveCta}
-                    <motion.span
-                      aria-hidden
-                      animate={
-                        reduce
-                          ? undefined
-                          : {
-                              x: dir === "rtl" ? [0, -4, 0] : [0, 4, 0],
-                            }
-                      }
-                      transition={{
-                        duration: 1.8,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                      className="inline-flex"
+              <p className="w-full text-xs tracking-[0.12em] text-cream-200/55">
+                {t.chooseVenue}
+              </p>
+
+              {SECTIONS.map((section) => {
+                const Icon = section.icon;
+                return (
+                  <motion.div
+                    key={section.href}
+                    className="w-full sm:w-auto"
+                    whileHover={reduce ? undefined : { scale: 1.03, y: -2 }}
+                    whileTap={reduce ? undefined : { scale: 0.97 }}
+                    transition={softSpring}
+                  >
+                    <Link
+                      href={section.href}
+                      className={cn(
+                        "inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-8 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 sm:w-auto",
+                        section.primary
+                          ? "bg-cream-200 text-forest-700 shadow-soft hover:bg-cream-100 focus-visible:ring-cream-200/40"
+                          : "gold" in section && section.gold
+                            ? "border border-[#c4b48a]/35 bg-[#c4b48a]/10 text-[#e8dcc0] hover:border-[#c4b48a]/55 hover:bg-[#c4b48a]/16 focus-visible:ring-[#c4b48a]/40"
+                            : "border border-cream-200/30 bg-cream-200/8 text-cream-200 hover:border-cream-200/50 hover:bg-cream-200/14 focus-visible:ring-cream-200/40"
+                      )}
                     >
-                      <CtaArrow className="h-4 w-4" />
-                    </motion.span>
-                  </Button>
-                </Link>
-              </motion.div>
-              <motion.div
-                className="w-full sm:w-auto"
-                whileHover={reduce ? undefined : { scale: 1.02 }}
-                whileTap={reduce ? undefined : { scale: 0.98 }}
-                transition={softSpring}
-              >
-                <VipLink />
-              </motion.div>
-              <motion.div
-                className="w-full sm:w-auto"
-                whileHover={reduce ? undefined : { scale: 1.02 }}
-                whileTap={reduce ? undefined : { scale: 0.98 }}
-                transition={softSpring}
-              >
-                <EventsLink />
-              </motion.div>
+                      <Icon className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                      <span>{labels[section.key]}</span>
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           </div>
         </motion.div>

@@ -8,6 +8,11 @@ type Msg = {
   brand: string;
   brandLatin: string;
   tagline: string;
+  chooseVenue: string;
+  restaurant: string;
+  lounge: string;
+  restaurantTagline: string;
+  loungeTagline: string;
   reserveCta: string;
   location: string;
   getDirections: string;
@@ -140,6 +145,13 @@ export const messages: Record<Locale, Msg> = {
     brand: "دارنا",
     brandLatin: "DARNA",
     tagline: "حيث تلتقي الألفة بالمذاق — احجزوا طاولتكم في قلب رام الله.",
+    chooseVenue: "اختاروا تجربتكم",
+    restaurant: "المطعم",
+    lounge: "اللاونج",
+    restaurantTagline:
+      "مائدة دافئة في قلب القاعة — احجزوا طاولتكم أو أمسية VIP تليق بكم.",
+    loungeTagline:
+      "أمسية أهدأ، إضاءة أخف، وحضور خاص — اللاونج بانتظاركم.",
     reserveCta: "احجز طاولتك",
     location: "فلسطين · رام الله",
     getDirections: "الموقع على الخريطة",
@@ -151,11 +163,11 @@ export const messages: Record<Locale, Msg> = {
     vipTitle: "VIP",
     vipTagline:
       "أمسية بطابع خاص — طاولة مفضّلة، استقبال شخصي، وترتيب يليق بالمناسبات والأفراح.",
-    eventsCta: "مناسبات وتموين",
-    eventsEyebrow: "لحظة تليق بالذهب · خارج القاعة",
-    eventsTitle: "مناسبات",
+    eventsCta: "تموين",
+    eventsEyebrow: "تموين دارنا · حيثما كنتم",
+    eventsTitle: "تموين",
     eventsTagline:
-      "أفراح ومناسبات تُروى — تموين دارنا يفتح القوس على مائدة تُضيء الليلة كلها.",
+      "مائدة دارنا تصل إليكم — باقات كاملة، فريق خاص، وترتيب يليق بكل مناسبة.",
     eventsHeroCta: "ادخلوا عالم الباقات",
     eventsPackagesTitle: "باقات ومزاياها",
     eventsPackagesHint: "كل باقة بمزاياها كاملة — اختاروا ما يليق بمناسبتكم.",
@@ -164,11 +176,11 @@ export const messages: Record<Locale, Msg> = {
     eventsIncludes: "تشمل",
     eventsExtrasTitle: "فريقكم الخاص",
     eventsExtrasHint: "أضيفوا شيفًا أو طاقم خدمة… وكأن دارنا جاءت إليكم.",
-    eventsQuoteTitle: "اكتبوا دعوة مناسبتكم",
+    eventsQuoteTitle: "اطلبوا تموينكم",
     eventsQuoteHint: "نراجع التفاصيل ونردّ عليكم بترتيب يليق باللحظة.",
-    eventsSubmit: "إرسال طلب المناسبة",
+    eventsSubmit: "إرسال طلب التموين",
     eventsDisclaimer: "الأسعار تقديرية وتُؤكَّد حسب التاريخ وعدد الضيوف وموقع المناسبة.",
-    eventsReceived: "وصل طلب مناسبتكم",
+    eventsReceived: "وصل طلب تموينكم",
     eventsPending: (code) =>
       `طلبكم ${code} بين أيدينا — سنتواصل معكم قريبًا لترتيب التفاصيل.`,
     eventsEstimate: "التقدير الأولي",
@@ -250,6 +262,13 @@ export const messages: Record<Locale, Msg> = {
     brand: "DARNA",
     brandLatin: "DARNA",
     tagline: "Where warmth meets the table — reserve your place in the heart of Ramallah.",
+    chooseVenue: "Choose your experience",
+    restaurant: "Restaurant",
+    lounge: "Lounge",
+    restaurantTagline:
+      "A warm table in the heart of the room — book your seat or a VIP evening made for you.",
+    loungeTagline:
+      "A quieter night, softer light, and a private presence — the lounge awaits.",
     reserveCta: "Book your table",
     location: "Palestine · Ramallah",
     getDirections: "Get directions",
@@ -261,11 +280,11 @@ export const messages: Record<Locale, Msg> = {
     vipTitle: "VIP",
     vipTagline:
       "An elevated evening — preferred seating, personal hosting, and arrangements for celebrations & weddings.",
-    eventsCta: "Events & catering",
-    eventsEyebrow: "A golden hour · beyond the dining room",
-    eventsTitle: "Events",
+    eventsCta: "Catering",
+    eventsEyebrow: "Darna catering · wherever you gather",
+    eventsTitle: "Catering",
     eventsTagline:
-      "Weddings and private occasions, told in light — Darna catering opens the arch onto a table that carries the night.",
+      "Darna’s table comes to you — complete packages, a private team, and an arrangement worthy of every occasion.",
     eventsHeroCta: "Enter the packages",
     eventsPackagesTitle: "Packages & inclusions",
     eventsPackagesHint: "Four fixed per-guest packages — every inclusion listed clearly.",
@@ -274,12 +293,12 @@ export const messages: Record<Locale, Msg> = {
     eventsIncludes: "Includes",
     eventsExtrasTitle: "Your private team",
     eventsExtrasHint: "Add a chef or service staff — as if Darna came to you.",
-    eventsQuoteTitle: "Write your invitation",
+    eventsQuoteTitle: "Request your catering",
     eventsQuoteHint: "We review the details and reply with an arrangement worthy of the moment.",
-    eventsSubmit: "Send event request",
+    eventsSubmit: "Send catering request",
     eventsDisclaimer:
       "Prices are estimates and confirmed by date, guest count, and venue.",
-    eventsReceived: "Event request received",
+    eventsReceived: "Catering request received",
     eventsPending: (code) =>
       `Request ${code} is with us — we’ll reach out shortly to arrange the details.`,
     eventsEstimate: "Initial estimate",
