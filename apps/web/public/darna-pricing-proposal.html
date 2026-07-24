@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>عرض سعر — منصة دارنا للحجوزات</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --forest: #234431;
+      --forest-deep: #1c3628;
+      --forest-ink: #102018;
+      --cream: #ece9d4;
+      --cream-soft: #f7f4e8;
+      --gold: #c4b48a;
+      --gold-deep: #a89768;
+      --muted: #5a6b60;
+      --line: rgba(35, 68, 49, 0.14);
+      --page: #fbfaf6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: A4;
+      margin: 14mm 16mm 16mm;
+    }
+
+    html, body {
+      background: var(--page);
+      color: var(--forest-ink);
+      font-family: "Cairo", Tahoma, sans-serif;
+      font-size: 11.5pt;
+      line-height: 1.75;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      overflow-x: hidden;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 18px 16px 28px;
+    }
+
+    /* Cover / Header */
+    .hero {
+      background: linear-gradient(145deg, var(--forest-ink) 0%, var(--forest) 55%, #2d5441 100%);
+      color: var(--cream);
+      border-radius: 18px;
+      padding: 28px 30px 26px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -60px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,180,138,0.22), transparent 68%);
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-mark {
+      font-size: 28pt;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
+
+    .brand-sub {
+      margin-top: 4px;
+      font-size: 10pt;
+      color: rgba(236, 233, 212, 0.72);
+      letter-spacing: 0.18em;
+    }
+
+    .doc-meta {
+      text-align: left;
+      font-size: 9.5pt;
+      color: rgba(236, 233, 212, 0.78);
+      line-height: 1.6;
+    }
+
+    .doc-meta strong {
+      display: block;
+      color: var(--cream);
+      font-size: 11pt;
+      margin-bottom: 2px;
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 1;
+      margin-top: 22px;
+      font-size: 20pt;
+      font-weight: 700;
+      line-height: 1.35;
+      max-width: 90%;
+    }
+
+    .hero-lead {
+      position: relative;
+      z-index: 1;
+      margin-top: 10px;
+      font-size: 11pt;
+      color: rgba(236, 233, 212, 0.82);
+      max-width: 92%;
+    }
+
+    .gold-rule {
+      height: 2px;
+      width: 64px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 14px 0 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Sections */
+    h2 {
+      font-size: 13.5pt;
+      color: var(--forest);
+      margin: 22px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 12pt;
+      color: var(--forest-deep);
+      margin: 14px 0 6px;
+      font-weight: 700;
+    }
+
+    p { margin-bottom: 8px; color: #24352c; }
+
+    .intro {
+      background: var(--cream-soft);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 6px;
+    }
+
+    .intro p:last-child { margin-bottom: 0; }
+
+    ul {
+      margin: 6px 0 10px 0;
+      padding-right: 18px;
+      padding-left: 0;
+    }
+
+    li {
+      margin-bottom: 4px;
+      color: #24352c;
+    }
+
+    .muted { color: var(--muted); font-size: 10pt; }
+
+    /* Offer cards */
+    .offers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+      page-break-inside: avoid;
+    }
+
+    .offer {
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .offer.featured {
+      border-color: rgba(196, 180, 138, 0.55);
+      box-shadow: 0 10px 28px rgba(16, 32, 24, 0.08);
+    }
+
+    .offer-head {
+      padding: 14px 16px 12px;
+      background: var(--forest);
+      color: var(--cream);
+    }
+
+    .offer.featured .offer-head {
+      background: linear-gradient(135deg, var(--forest-ink), #2d5441);
+    }
+
+    .offer-badge {
+      display: inline-block;
+      font-size: 8.5pt;
+      letter-spacing: 0.08em;
+      background: rgba(196, 180, 138, 0.22);
+      color: #f0e6d0;
+      border: 1px solid rgba(196, 180, 138, 0.35);
+      border-radius: 999px;
+      padding: 2px 10px;
+      margin-bottom: 8px;
+    }
+
+    .offer-title {
+      font-size: 14pt;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .offer-price {
+      margin-top: 8px;
+      font-size: 26pt;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #f5efd8;
+      line-height: 1;
+    }
+
+    .offer-price span {
+      font-size: 11pt;
+      font-weight: 500;
+      opacity: 0.75;
+      margin-right: 4px;
+    }
+
+    .offer-body {
+      padding: 12px 16px 16px;
+      flex: 1;
+    }
+
+    .offer-body h4 {
+      font-size: 10.5pt;
+      color: var(--forest);
+      margin: 8px 0 4px;
+      font-weight: 700;
+    }
+
+    .offer-body ul {
+      margin: 0;
+      padding-right: 16px;
+    }
+
+    .offer-body li {
+      font-size: 10pt;
+      margin-bottom: 3px;
+      line-height: 1.55;
+    }
+
+    .offer-foot {
+      padding: 10px 16px 14px;
+      border-top: 1px dashed var(--line);
+      font-size: 9.5pt;
+      color: var(--muted);
+      background: var(--page);
+    }
+
+    /* Comparison table */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 8px;
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 480px;
+      border-collapse: collapse;
+      font-size: 10.5pt;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 9px 10px;
+      text-align: right;
+      vertical-align: middle;
+    }
+
+    th {
+      background: var(--forest);
+      color: var(--cream);
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) td { background: var(--cream-soft); }
+
+    td.center, th.center { text-align: center; }
+
+    .check { color: var(--forest); font-weight: 700; }
+    .partial { color: var(--gold-deep); font-weight: 600; }
+
+    /* Notes / terms */
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: white;
+      margin-top: 8px;
+    }
+
+    .cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .cols .box h3 { margin-top: 0; }
+
+    .footer {
+      margin-top: 26px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 9.5pt;
+      color: var(--muted);
+    }
+
+    .recommend {
+      margin-top: 14px;
+      background: linear-gradient(90deg, rgba(35,68,49,0.08), rgba(196,180,138,0.12));
+      border: 1px solid rgba(196,180,138,0.35);
+      border-radius: 14px;
+      padding: 12px 16px;
+      page-break-inside: avoid;
+    }
+
+    .recommend strong {
+      color: var(--forest);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 11.5pt;
+    }
+
+    /* —— Mobile / tablet —— */
+    @media (max-width: 720px) {
+      html, body { font-size: 15px; }
+
+      .page {
+        padding: 12px 12px max(20px, env(safe-area-inset-bottom));
+      }
+
+      .hero {
+        border-radius: 14px;
+        padding: 20px 18px 18px;
+        margin-bottom: 16px;
+      }
+
+      .hero-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .brand-mark { font-size: 26px; }
+
+      .brand-sub {
+        font-size: 12px;
+        letter-spacing: 0.12em;
+      }
+
+      .doc-meta {
+        text-align: right;
+        font-size: 13px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(236, 233, 212, 0.18);
+      }
+
+      .hero h1 {
+        margin-top: 16px;
+        font-size: 22px;
+        max-width: 100%;
+      }
+
+      .hero-lead {
+        font-size: 14px;
+        max-width: 100%;
+      }
+
+      h2 {
+        font-size: 17px;
+        margin: 20px 0 10px;
+      }
+
+      h3 { font-size: 15px; }
+
+      .intro {
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      .muted { font-size: 13px; }
+
+      .offers {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .offer-price { font-size: 32px; }
+
+      .offer-body li,
+      .offer-foot { font-size: 14px; }
+
+      .offer-body h4 { font-size: 14px; }
+
+      table {
+        min-width: 520px;
+        font-size: 13px;
+      }
+
+      th, td { padding: 10px 8px; }
+
+      .cols {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .box {
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      .recommend {
+        border-radius: 12px;
+        padding: 14px;
+        font-size: 14px;
+      }
+
+      .recommend strong { font-size: 15px; }
+
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 13px;
+      }
+
+      .footer > div:last-child {
+        text-align: right !important;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .page { padding: 10px 10px 18px; }
+      .brand-mark { font-size: 24px; }
+      .hero h1 { font-size: 20px; }
+      .offer-price { font-size: 28px; }
+    }
+
+    @media print {
+      html, body { background: white; font-size: 11.5pt; }
+      .page { padding: 0; max-width: none; }
+      .hero { break-inside: avoid; }
+      .offers { break-inside: avoid; grid-template-columns: 1fr 1fr; }
+      .cols { grid-template-columns: 1fr 1fr; }
+      .table-wrap { overflow: visible; }
+      table { min-width: 0; }
+      .footer { flex-direction: row; }
+      .footer > div:last-child { text-align: left !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="brand-mark">DARNA</div>
+          <div class="brand-sub">دارنا · رام الله</div>
+        </div>
+        <div class="doc-meta">
+          <strong>عرض سعر رسمي</strong>
+          يوليو 2026 · ساري لمدة 30 يوماً
+        </div>
+      </div>
+      <h1>عرض السعر لمطعم دارنا</h1>
+     
+      <div class="gold-rule"></div>
+    </header>
+
+    <section class="intro">
+      <p>
+        <strong>فكرة المشروع:</strong>
+        تطبيق حجز لمكان واحد يجمع مطعماً ولاونجاً وتمويناً. الضيف يختار تجربته أولاً ثم يحجز بسهولة، والفريق يدير الحجوزات والطاولات لحظياً حتى يكون الاستقبال مرتّباً ويليق بالمكان.
+      </p>
+      <p class="muted" style="margin-bottom:0">
+        مرجع السوق الفلسطيني لأنظمة مشابهة عادة ما بين <strong>18,000 – 35,000 ₪</strong> (تقريباً 5,000 – 9,500 دولار). العروض أدناه أقل من وسط السوق بشكل مقصود مع الحفاظ على جودة التسليم.
+      </p>
+    </section>
+
+    <h2>العرضان</h2>
+
+    <div class="offers">
+      <article class="offer">
+        <div class="offer-head">
+          <div class="offer-badge">عرض 1</div>
+          <div class="offer-title">الإطلاق الكامل</div>
+          <div class="offer-price"><span>$</span>1,850</div>
+        </div>
+        <div class="offer-body">
+          <h4>يشمل</h4>
+          <ul>
+            <li>بوابة الأقسام: المطعم · اللاونج · التموين</li>
+            <li>الحجز العادي بخطوات واضحة</li>
+            <li>مسار VIP بتجربة مميزة</li>
+            <li>مسار التموين (باقات وطلب)</li>
+            <li>عربي / إنجليزي مع دعم RTL</li>
+            <li>لوحة تشغيل يومي: لوحة التحكم · الحجوزات · القاعة · الجدول الزمني · الإشعارات</li>
+            <li>نشر الواجهة + تسليم وضبط أولي</li>
+          </ul>
+          <h4>مناسب لـ</h4>
+          <ul>
+            <li>مطعم يريد حضوراً أونلاين فخماً وتشغيلاً يومياً أساسياً بسرعة</li>
+          </ul>
+        </div>
+        <div class="offer-foot">أقل من وسط السوق بنحو ~74%</div>
+      </article>
+
+      <article class="offer featured">
+        <div class="offer-head">
+          <div class="offer-badge">عرض 2 · موصى به</div>
+          <div class="offer-title">المشروع بالكامل</div>
+          <div class="offer-price"><span>$</span>3,200</div>
+        </div>
+        <div class="offer-body">
+          <h4>يشمل كل عرض 1 +</h4>
+          <ul>
+            <li>إكمال لوحة التحكم كاملة (13 قسماً)</li>
+            <li>قائمة الانتظار · العملاء · القائمة السوداء</li>
+            <li>الموظفون · الإعدادات · سجل النشاط</li>
+            <li>التحليلات · الخريطة الحرارية</li>
+            <li>ربط التشغيل الفعلي (API + Realtime)</li>
+            <li>ضبط أولي للفرع + تدريب سريع للفريق</li>
+            <li>شهر دعم فني بعد التسليم</li>
+          </ul>
+          <h4>مناسب لـ</h4>
+          <ul>
+            <li>تشغيل يومي حقيقي من الحجز حتى الإدارة والتقارير</li>
+          </ul>
+        </div>
+        <div class="offer-foot">أقل من وسط السوق بنحو ~55% · الخيار الأساسي</div>
+      </article>
+    </div>
+
+    <div class="recommend">
+      <strong>التوصية</strong>
+      اعتماد <b>عرض 2 — المشروع بالكامل ($3,200)</b> كعرض أساسي للعميل. عرض 1 يبقى خيار دخول أسرع إذا كانت الميزانية مضغوطة، مع إمكانية الترقية لاحقاً لإكمال بقية أقسام اللوحة.
+    </div>
+
+    <h2>مقارنة سريعة</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>البند</th>
+            <th class="center">عرض 1<br />$1,850</th>
+            <th class="center">عرض 2<br />$3,200</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>واجهة الضيوف (مطعم / لاونج / تموين)</td>
+            <td class="center check">✓ كاملة</td>
+            <td class="center check">✓ كاملة</td>
+          </tr>
+          <tr>
+            <td>حجز عادي + VIP + تموين</td>
+            <td class="center check">✓</td>
+            <td class="center check">✓</td>
+          </tr>
+          <tr>
+            <td>عربي / إنجليزي</td>
+            <td class="center check">✓</td>
+            <td class="center check">✓</td>
+          </tr>
+          <tr>
+            <td>لوحة التشغيل اليومي</td>
+            <td class="center check">✓</td>
+            <td class="center check">✓</td>
+          </tr>
+          <tr>
+            <td>لوحة التحكم كاملة (13 قسماً)</td>
+            <td class="center partial">جزئي</td>
+            <td class="center check">✓ كاملة</td>
+          </tr>
+          <tr>
+            <td>API + Realtime للتشغيل الحي</td>
+            <td class="center partial">أساسي</td>
+            <td class="center check">✓</td>
+          </tr>
+          <tr>
+            <td>تدريب الفريق + شهر دعم</td>
+            <td class="center">—</td>
+            <td class="center check">✓</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>نطاق لوحة التحكم (عرض 2)</h2>
+    <div class="cols">
+      <div class="box">
+        <h3>تشغيل يومي</h3>
+        <ul>
+          <li>لوحة التحكم</li>
+          <li>الحجوزات</li>
+          <li>القاعة (Floor)</li>
+          <li>الجدول الزمني</li>
+          <li>قائمة الانتظار</li>
+          <li>الإشعارات</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>ضيوف · إدارة · تقارير</h3>
+        <ul>
+          <li>العملاء · القائمة السوداء</li>
+          <li>الموظفون · الإعدادات</li>
+          <li>سجل النشاط</li>
+          <li>التحليلات</li>
+          <li>الخريطة الحرارية</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>شروط العرض</h2>
+    <div class="box">
+      <ul>
+        <li>الأسعار بالدولار الأمريكي ($)، لمرة واحدة، وغير شاملة الاستضافة السحابية المستمرة ما لم يُتفق لاحقاً.</li>
+        <li>دفع مقترح: <strong>50%</strong> عند البدء · <strong>50%</strong> عند التسليم النهائي.</li>
+        <li>صلاحية العرض: <strong>30 يوماً</strong> من تاريخ الإصدار.</li>
+        <li>أي توسعة خارج النطاق (تطبيق جوال منفصل، دفع إلكتروني، فروع متعددة) تُسعَّر بشكل مستقل.</li>
+        <li>تقسيم الصلاحيات التفصيلي بين المالك والموظفين يمكن إضافته لاحقاً كمرحلة تالية.</li>
+      </ul>
+    </div>
+
+    <footer class="footer">
+      <div>
+        <strong style="color:var(--forest)">DARNA  </strong><br />
+        عرض سعر سري للعميل نادين
+      </div>
+      <div style="text-align:left">
+        يوليو 2026<br />
+        الصفحة 1 من 1
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
